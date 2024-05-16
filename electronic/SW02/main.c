@@ -1,5 +1,5 @@
 #define PROGRAM2
-#ifdef PROGRAM1//‰Û‘è1
+#ifdef PROGRAM1//èª²é¡Œ1
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdint.h>
@@ -8,7 +8,7 @@
 
 int main(int argc, char* argv[])
 {
-  FILE* wfp; // ‘‚«‚İ—pƒtƒ@ƒCƒ‹‚Ìƒ|ƒCƒ“ƒ^•Ï”
+  FILE* wfp; // æ›¸ãè¾¼ã¿ç”¨ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒã‚¤ãƒ³ã‚¿å¤‰æ•°
   char input[100] = "y\0";
   int ch;
   if ((argc == 3) && (strcmp(argv[1], "-i") == 0)) {
@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
       wfp = fopen(argv[2], "wb");
     }
     else {
-      printf("%sã‘‚«‚µ‚Ä‚æ‚¢‚Å‚·‚©?[Y/N]", argv[2]);
+      printf("%sä¸Šæ›¸ãã—ã¦ã‚ˆã„ã§ã™ã‹?[Y/N]", argv[2]);
       do
       {
       loop:
@@ -46,12 +46,12 @@ int main(int argc, char* argv[])
   }
   while (strcmp(input, "Y\0") == 0 || strcmp(input, "y\0") == 0)
   {
-    printf("•¶š‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢\n");
+    printf("æ–‡å­—ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„\n");
     scanf("%s", input);
     fprintf(wfp, "%s\n", input);
     while (strcmp(input, "Y\0") != 0 && strcmp(input, "y\0") != 0 && strcmp(input, "N\0") != 0 && strcmp(input, "n\0") != 0)
     {
-      printf("“ü—Í‚ğ‘±‚¯‚Ü‚·‚©?[Y/N]");
+      printf("å…¥åŠ›ã‚’ç¶šã‘ã¾ã™ã‹?[Y/N]");
       scanf("%s", input);
     }
   }
@@ -59,17 +59,18 @@ int main(int argc, char* argv[])
   return 0;
 }
 #endif // PROGRAM61
-#ifdef PROGRAM2 //‰Û‘è2
+#ifdef PROGRAM2 //èª²é¡Œ2
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <time.h>
 
 int main(int argc, char* argv[])
 {
   srand((uint16_t)time(NULL));
-  FILE* rfp; // “Ç‚İ‚İ—pƒtƒ@ƒCƒ‹‚Ìƒ|ƒCƒ“ƒ^•Ï”
-  int ch; // ƒtƒ@ƒCƒ‹‚©‚ç“Ç‚İ‚ñ‚¾1ƒoƒCƒg‚Ìƒf[ƒ^
+  FILE* rfp; // èª­ã¿è¾¼ã¿ç”¨ãƒ•ã‚¡ã‚¤ãƒ«ã®ãƒã‚¤ãƒ³ã‚¿å¤‰æ•°
+  int ch; // ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰èª­ã¿è¾¼ã‚“ã 1ãƒã‚¤ãƒˆã®ãƒ‡ãƒ¼ã‚¿
   int count = 0;
   int j = 0;
   if (argc != 3) {
@@ -87,15 +88,13 @@ int main(int argc, char* argv[])
     int ran = rand() % 1000;
     if ((ran % 111) == 0) {
       j++;
-      fprintf(rfp, "%3d %s \n", ran, "‚ ‚½‚è");
+      fprintf(rfp, "%3d %s \n", ran, "ã‚ãŸã‚Š");
     }
     else {
-      fprintf(rfp, "%3d %s \n", ran, "‚Í‚¸‚ê");
+      fprintf(rfp, "%3d %s \n", ran, "ã¯ãšã‚Œ");
     }
   }
-  fprintf(rfp, "s‰ñ”: %d, “–‚½‚è‰ñ”: %d, Šú‘Ò’l: 1.000000[%%], Šm—¦: %f[%%]",count,j, (double)j / (double)count * 100);
-  printf("%f\n", (double)j / (double)count * 100);
-  printf("%d", j);
+  fprintf(rfp, "è©¦è¡Œå›æ•°: %d, å½“ãŸã‚Šå›æ•°: %d, æœŸå¾…å€¤: 1.000000[%%], ç¢ºç‡: %f[%%]",count,j, (double)j / (double)count * 100);
   fclose(rfp);
   return 0;
 }
