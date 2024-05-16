@@ -167,6 +167,30 @@ main関数では、表\ref{table:variables2}の変数が宣言されています
 
 \section{結果の説明}
 \subsection{プログラム1個目}
+ファイルが存在しない場合の実行結果を図\ref{fig:result_pr1_ndup}に示す。\\
+ファイルが存在する場合の実行結果を図\ref{fig:result_pr1_dup}に示す。\\
+また、ファイルの出力結果を表\ref{table:file1}に示す。
+abc1.txtではファイルが存在しないとき、abc2.txtではファイルが存在するときの実行結果である。
+\begin{table}[ht]
+  \centering
+  \begin{tabular}{|c|c|}
+    \hline
+    ファイル名 & 出力結果 \\
+    \hline
+    \hline
+    abc1.txt & \begin{tabular}{c}
+    \input{./txt/abc1.txt }  
+    \end{tabular}\\
+    \hline
+    abc2.txt & \begin{tabular}{c}
+      \input{./txt/abc2.txt }  
+      \end{tabular} \\
+    \hline
+  \end{tabular}
+  \caption{ファイルの出力結果\\(abcのときがファイルが存在しないときで、abc2のときがファイルが存在するとき)}
+  \label{table:file1}
+\end{table}
+
 \begin{figure}[ht]
   \centering
   \includegraphics[width=0.5\textwidth]{./img/result_pr1_ndup.png}
@@ -180,6 +204,19 @@ main関数では、表\ref{table:variables2}の変数が宣言されています
   \caption{ファイルが存在するときの実行結果}
   \label{fig:result_pr1_dup}
 \end{figure}
+
+\newpage
+\subsection{プログラム2個目}
+ファイルの出力結果を図\ref{fig:result_pr2}に示す。\\
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.5\textwidth]{./img/result_pr2.png}
+  \caption{ファイルの出力結果}
+  \label{fig:result_pr2}
+\end{figure}
+
+
 
 
 
