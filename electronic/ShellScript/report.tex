@@ -1,0 +1,99 @@
+\documentclass[a4paper,11pt]{jsarticle}
+
+
+% 数式
+\usepackage{amsmath,amsfonts}
+\usepackage{bm}
+% 画像
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{listings, jlisting}
+
+
+\usepackage{xcolor}
+
+%ソースコードの色
+\definecolor{commentgreen}{RGB}{0,200,0}
+\definecolor{eminence}{RGB}{120,80,250}
+\definecolor{weborange}{RGB}{255,165,0}
+\definecolor{frenchplum}{RGB}{10,150,200}
+
+\lstset{
+        language = {C},
+        basicstyle = \ttfamily\small,
+        keywordstyle=\color{eminence}\ttfamily\bfseries,
+        commentstyle=\color{commentgreen}\textit,
+    identifierstyle=\color{black}\ttfamily,
+        xleftmargin=.35in,
+        frame=lines,
+    showstringspaces=false,
+        numbers=left,
+        stepnumber = 1,
+        breaklines=true,
+        numberstyle = \ttfamily\normalsize,
+    tabsize=4,  
+        emph={int, int8_t, int16_t, int32_t, int64_t, uint8_t, uint16_t, uint32_t, uint64_t, char, double, float, unsigned, void, bool},
+        emphstyle={\color{blue}}, 
+        morekeywords={>, <, ., ;, +, -, *, /, !, =, ~},
+        breakindent = 10pt, 
+        framexleftmargin=10mm, 
+        columns=fixed,
+        basewidth=0.5em,
+        }
+
+\begin{document}
+
+\title{Shell実習の最終課題}
+\author{古城隆人}
+\date{\today}
+\maketitle
+
+
+\newpage
+\begin{center}
+  \begin{center}
+    \Huge Shell実習の最終課題
+  \end{center}
+\end{center}
+課題の内容と作成したファイルを以下に示す。
+\section{課題1}
+\subsection{課題内容}
+以下の要件を満たすシェルスクリプトを作成する。
+\begin{itemize}
+  \item hoge.updateというファイルが存在するかを確認する。
+  \item hoge.updateが存在する場合、update alreadyと表示する。
+  \item hoge.updateが存在しない場合、hogeをhoge.updateとhoge.{today}というファイルにコピーする。
+  \item そして、hogeに/tmp/hogenewをコピーする。
+\end{itemize}
+\subsection{作成したファイル}
+\lstinputlisting[caption={hogeupdate.sh}, label={lst:main}]{./shell/q1/hogeupdate.sh}
+\lstinputlisting[caption={hogeupdate.csh}, label={lst:main}]{./shell/q1/hogeupdate.csh}
+
+\section{課題2}
+\subsection{課題内容}
+以下の要件を満たすシェルスクリプトを作成する。
+\begin{itemize}
+  \item あるファイルを今日の日付入りのファイルにコピーするスクリプトを作成する。
+\end{itemize}
+\subsection{作成したファイル}
+\lstinputlisting[caption={cptoday.sh}, label={lst:main}]{./shell/q2/cptoday.sh}
+
+\section{課題3}
+\subsection{課題内容}
+以下の要件を満たすシェルスクリプトを作成する。
+\begin{itemize}
+  \item ファイル名を引数に持ち、そのファイル名から拡張子を取り除いたファイル名を表示するスクリプトを作成する。
+\end{itemize}
+\subsection{作成したファイル}
+\lstinputlisting[caption={nameonly.sh}, label={lst:main}]{./shell/q3/nameonly.sh}
+
+\section{課題4}
+\subsection{課題内容}
+以下の要件を満たすシェルスクリプトを作成する。
+\begin{itemize}
+  \item /usr/*ファイルの容量を調べてメールにフォーマットして送信するスクリプトを作成する。
+\end{itemize}
+\subsection{作成したファイル}
+\lstinputlisting[caption={dirducheck.sh}, label={lst:main}]{./shell/q4/dirducheck.sh}
+
+
+\end{document}
