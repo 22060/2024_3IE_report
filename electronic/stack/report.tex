@@ -1,0 +1,117 @@
+\documentclass[a4paper,11pt]{jsarticle}
+
+
+% 数式
+\usepackage{amsmath,amsfonts}
+\usepackage{bm}
+% 画像
+\usepackage[dvipdfmx]{graphicx}
+
+\include{setting.txt}
+
+
+\begin{document}
+
+\title{スタックの実装と応用}
+\author{古城隆人}
+\date{\today}
+\maketitle
+
+\newpage
+
+
+\section{目的}
+ススタックを用いたデータ構造を理解し、スタックを用いたプログラムを作成することで、スタックの基本的な操作を理解する。また、スタックを用いたハノイの塔のプログラムを作成し、理解を深める。
+\section{原理}
+\subsection{スタック}
+スタックとはデータ構造の一種であり、データの追加や削除が限定的に行うことが出来る構造である。
+限定的にすることによりデータの数が増えてもデータの挿入や削除にかかる時間が一定になるという利点がある。
+スタックはデータが出入りする順番により、LIFO(Last In First Out)、FILO(First in Last out)と呼ばれる。
+スタックには以下の操作がある。
+\begin{itemize}
+  \item push: スタックにデータを追加する
+  \item pop: スタックからデータを取り出す
+\end{itemize}
+pushを行うと、スタックの一番上にデータが追加される。popを行うと、スタックの一番上のデータが取り出される。
+\subsection{ハノイの塔}
+ハノイの塔は、3本の杭とその上に積まれた円盤からなるパズルである。
+\section{実験環境}
+\begin{table}[ht]
+  \centering
+  \begin{tabular}{|c|c|}
+    \hline
+    \textbf{項目} & \textbf{値}              \\
+    \hline
+    OS          & windows10上のwsl2(Ubuntu) \\
+    \hline
+    CPU         & Intel Core i7           \\
+    \hline
+    メモリ         & 8GB                     \\
+    \hline
+    コンパイラ       & gcc 11.4.0              \\
+    \hline
+  \end{tabular}
+  \caption{実験環境}
+  \label{tab:environment}
+\end{table}
+
+\section{プログラムの設計と説明}
+\subsection{スタックの実装}
+スタックの実装には、配列を用いる。スタックの構造体には、スタックのサイズ、スタックの配列を持つ。
+\subsubsection{構造体}
+\begin{lstlisting}[caption={stack.h}, label={lst:stackh}]
+#define HEIGHT 5
+struct Stack
+{
+  int data[HEIGHT];
+  int volume;
+};
+\end{lstlisting}
+\subsubsection{作成する関数}
+\begin{itemize}
+  \item init: スタックの構造体を初期化する、関数の仕様は 表\ref{tab:init_func}に示す。
+        \begin{table}[ht]
+          \centering
+          \begin{tabular}{|c|c|}
+            \hline
+            機能  & スタック構造体の中にある配列を全部0で初期化する。            \\
+            \hline
+            引数  & struct Stack *stack : 初期化するスタックのポインタ \\
+            \hline
+            戻り値 & なし                                   \\
+            \hline
+          \end{tabular}
+          \caption{init関数}
+          \label{tab:init_func}
+        \end{table}
+  \item pop: スタックからデータを取り出す、関数の仕様は 表\ref{tab:pop_func}に示す。
+  \begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|}
+      \hline
+      機能  & スタック構造体の中にある配列を全部0で初期化する。            \\
+      \hline
+      引数  & struct Stack *stack : 初期化するスタックのポインタ \\
+      \hline
+      戻り値 & なし                                   \\
+      \hline
+    \end{tabular}
+    \caption{init関数}
+    \label{tab:pop_func}
+  \end{table}
+  \item init: スタック構造体の中にある配列を全部0で初期化する
+
+
+\end{itemize}
+
+\subsection{ハノイの塔}
+\section{プログラムの説明}
+\section{実行結果}
+\subsection{スタックの実装}
+\subsection{ハノイの塔}
+\section{考察}
+\section{付録:今回使用したプログラム}
+\lstinputlisting[caption={main.c}, label={lst:main}]{stack.c}
+
+
+\end{document}
