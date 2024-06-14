@@ -17,6 +17,17 @@
 \date{\today}
 \maketitle
 
+\begin{table}[b]
+  \centering
+  \begin{tabular}{:c:r:}
+    \hdashline
+    報告者 & 22060 古城 隆人 \\
+    \hdashline
+    提出日 & \today \\
+    \hdashline
+  \end{tabular}
+\end{table}
+
 \tableofcontents
 
 \newpage
@@ -36,10 +47,11 @@
 \end{itemize}
 pushを行うと、スタックの一番上にデータが追加される。popを行うと、スタックの一番上のデータが取り出される。
 \subsection{ハノイの塔}
-ハノイの塔は、3本の杭とその上に積まれた円盤からなるパズルである。片方のサイドに積まれた円盤をもう片方のサイドに移動させることが目的である。移動する際には、次のルールに従う。
+ハノイの塔は、3本の杭とその上に積まれた円盤からなるパズルである。移動のルールは以下の通りである。
 \begin{itemize}
-  \item 一度に一枚の円盤しか動かせない
-  \item 小さい円盤の上に大きい円盤を置くことはできない
+  \item 1回の移動で1枚の円盤しか動かせない
+  \item 小さい円盤の上に大きい円盤を乗せることはできない
+  \item すべての円盤を移動させるとき、最初の杭から最後の杭に移動させる
 \end{itemize}
 \section{実験環境}
 \begin{table}[ht]

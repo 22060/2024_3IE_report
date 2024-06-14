@@ -94,6 +94,7 @@ void PrintHeap(Heap *h)
 
     printf("\n");
 }
+
 void swap(int *a, int *b)
 {
     int temp = *a;

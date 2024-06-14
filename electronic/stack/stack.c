@@ -17,6 +17,7 @@ void init(struct Stack *stack)
     stack->volume = 0;
 }
 
+
 int push(struct Stack *stack, int number)
 {
     // データを最上位に積み込む
