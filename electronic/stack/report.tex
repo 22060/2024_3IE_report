@@ -17,6 +17,8 @@
 \date{\today}
 \maketitle
 
+\tableofcontents
+
 \newpage
 
 
@@ -34,7 +36,11 @@
 \end{itemize}
 pushを行うと、スタックの一番上にデータが追加される。popを行うと、スタックの一番上のデータが取り出される。
 \subsection{ハノイの塔}
-ハノイの塔は、3本の杭とその上に積まれた円盤からなるパズルである。
+ハノイの塔は、3本の杭とその上に積まれた円盤からなるパズルである。片方のサイドに積まれた円盤をもう片方のサイドに移動させることが目的である。移動する際には、次のルールに従う。
+\begin{itemize}
+  \item 一度に一枚の円盤しか動かせない
+  \item 小さい円盤の上に大きい円盤を置くことはできない
+\end{itemize}
 \section{実験環境}
 \begin{table}[ht]
   \centering
@@ -89,19 +95,78 @@ struct Stack
     \centering
     \begin{tabular}{|c|c|}
       \hline
-      機能  & スタック構造体の中にある配列を全部0で初期化する。            \\
+      機能  & スタックのデータを取り出して、そのデータを削除する。            \\
       \hline
-      引数  & struct Stack *stack : 初期化するスタックのポインタ \\
+      引数  & struct Stack *stack : popしたいstackのポインタ \\
       \hline
-      戻り値 & なし                                   \\
+      戻り値 & 削除したデータの値(int)を返すが、エラーが出たときは-1(int)を返す                               \\
       \hline
     \end{tabular}
-    \caption{init関数}
+    \caption{pop関数}
     \label{tab:pop_func}
   \end{table}
-  \item init: スタック構造体の中にある配列を全部0で初期化する
-
-
+  \item push: スタックに値を代入する、関数の仕様は 表\ref{tab:push_func}に示す。
+  \begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|}
+      \hline
+      機能  & スタックにデータを追加させる。            \\
+      \hline
+      引数  & struct Stack *stack : pushしたいstackのポインタ \\
+      \hline
+      戻り値 & 処理が正常に終了したら1、エラーが出たら-1                               \\
+      \hline
+    \end{tabular}
+    \caption{push関数}
+    \label{tab:push_func}
+  \end{table}
+  \newpage
+  \item printStack: スタックの中身を表示する、関数の仕様は 表\ref{tab:printstack_func}に示す。
+  \begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|}
+      \hline
+      機能  & スタックの中身を表示する。            \\
+      \hline
+      引数  & struct Stack *stack : 表示したいstackのポインタ \\
+      \hline
+      戻り値 & なし                               \\
+      \hline
+    \end{tabular}
+    \caption{printStack関数}
+    \label{tab:printstack_func}
+  \end{table}
+  \item pushTest: push関数のテストを行う、関数の仕様は 表\ref{tab:pushtest_func}に示す。
+  \begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|}
+      \hline
+      機能  & push関数のテストを行う。成功したらpush関数の戻り値が0になるため、\\ &if文を使い結果を出力する           \\
+      \hline
+      引数  & struct Stack *stack : pushしたいstackのポインタ \\
+       & num: pushする値 \\
+      \hline
+      戻り値 & なし                               \\
+      \hline
+    \end{tabular}
+    \caption{pushTest関数}
+    \label{tab:pushtest_func}
+  \end{table}
+  \item popTest: pop関数のテストを行う、関数の仕様は 表\ref{tab:poptest_func}に示す。
+  \begin{table}[ht]
+    \centering
+    \begin{tabular}{|c|c|}
+      \hline
+      機能  & pop関数のテストを行う。popに失敗したらpop関数の戻り値が-1になるため、\\ & if文を使い結果を出力する            \\
+      \hline
+      引数  & struct Stack *stack : popしたいstackのポインタ \\
+      \hline
+      戻り値 & なし                               \\
+      \hline
+    \end{tabular}
+    \caption{popTest関数}
+    \label{tab:poptest_func}
+  \end{table}
 \end{itemize}
 
 \subsection{ハノイの塔}
