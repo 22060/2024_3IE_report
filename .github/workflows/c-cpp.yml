@@ -15,6 +15,6 @@ jobs:
 
     - name: Compile and Run
       run: |
-        cd electronic/SW02
+        cd algorithm/Quicksort
         make
         ./main
