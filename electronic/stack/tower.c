@@ -50,7 +50,7 @@ int pop(struct Stack *stack)
 void printStack(struct Stack stack)
 {
     // スタックに格納されている値をスタックされている順番に 1 行に表示
-    for (int i = 0; i <HEIGHT; i++)
+    for (int i = 0; i < HEIGHT; i++)
     {
         printf("%d ", stack.data[i]);
     }
@@ -149,10 +149,10 @@ int main()
     }
     /*塔の初期状態を表示する*/
     for (i = 0; i < TOWERS; i++)
-        {
-            printf("%d : ", i + 1);
-            printStack(tower[i]);
-        }
+    {
+        printf("%d : ", i + 1);
+        printStack(tower[i]);
+    }
     while (1)
     {
         // 今，何回目の移動であるかを数える．
@@ -162,12 +162,19 @@ int main()
         printf("移動元塔と移動先塔を入力してください。[? ?]:");
         scanf("%d %d", &fromNumber, &toNumber);
 
-        // 移動元の塔から移動先の塔にデータを移動させる
-        if (enableStack(tower[fromNumber - 1], tower[toNumber - 1]))
+        if (fromNumber >= 0 && toNumber >= 0)
         {
-            tempNumber = pop(&tower[fromNumber - 1]);
-            push(&tower[toNumber - 1], tempNumber);
-            count++;
+            // 移動元の塔から移動先の塔にデータを移動させる
+            if (enableStack(tower[fromNumber - 1], tower[toNumber - 1]))
+            {
+                tempNumber = pop(&tower[fromNumber - 1]);
+                push(&tower[toNumber - 1], tempNumber);
+                count++;
+            }
+            else
+            {
+                printf("移動できません\n");
+            }
         }
         else
         {
