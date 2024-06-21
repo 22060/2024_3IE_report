@@ -57,38 +57,6 @@ void printStack(struct Stack stack)
     printf("\n");
 }
 
-// void pushTest(struct Stack *stack, int num)
-// {
-//     printf("push (%d) ", num);
-//     if (push(stack, num) == 0)
-//     {
-//         printf("SUCCESS\n");
-//     }
-//     else
-//     {
-//         printf("FAILURE\n");
-//     }
-//     printf("data : ");
-//     printStack(stack);
-// }
-
-// void popTest(struct Stack *stack)
-// {
-//     printf("pop ");
-//     int result = pop(stack);
-//     printf("(%d) ", result);
-//     if (result == -1)
-//     {
-//         printf("FAILURE\n");
-//     }
-//     else
-//     {
-//         printf("SUCCESS\n");
-//     }
-//     printf("data : ");
-//     printStack(stack);
-// }
-
 int top(struct Stack tower)
 {
     return tower.data[tower.volume - 1];
