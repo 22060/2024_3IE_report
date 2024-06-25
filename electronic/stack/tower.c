@@ -130,7 +130,7 @@ int main()
         printf("移動元塔と移動先塔を入力してください。[? ?]:");
         scanf("%d %d", &fromNumber, &toNumber);
 
-        if (fromNumber >= 0 && toNumber >= 0)
+        if (fromNumber >= 1 && fromNumber <= 3 && toNumber >= 1 && toNumber <= 3)
         {
             // 移動元の塔から移動先の塔にデータを移動させる
             if (enableStack(tower[fromNumber - 1], tower[toNumber - 1]))
