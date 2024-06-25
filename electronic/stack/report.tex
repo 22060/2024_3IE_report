@@ -1,12 +1,22 @@
 \documentclass[dvipdfmx]{jsarticle}
 \usepackage[final]{graphicx}
-
+\usepackage{multirow}
+\usepackage{caption}
+\captionsetup[lstlisting]{labelformat=empty}
 % 数式
 \usepackage{amsmath,amsfonts}
 \usepackage{bm}
 % 画像
+% \lstset{noxoutput=true}
 
 \include{setting.txt}
+\usepackage{listings}
+\usepackage{multicol}
+\newcommand{\listingcaption}[1]%
+{%
+\refstepcounter{lstlisting}\hfill%
+Listing \thelstlisting -- #1\hfill%\hfill%
+}%
 
 
 \begin{document}
@@ -116,16 +126,33 @@ struct Stack
   \centering
   \begin{tabular}{|c|c|}
     \hline
-    機能  & スタック構造体の中にある配列を全部0で初期化する。            \\
+    機能  & スタック構造体の中にある配列を全部0で初期化する。                  \\
     \hline
-    引数  & struct Stack *stack : 初期化するスタックのポインタ \\
+    引数  & struct Stack *stack : 初期化するスタックのポインタ       \\
     \hline
-    戻り値 & なし                                   \\
+    戻り値 & なし                                         \\
     \hline
+    \multicolumn{2}{|c|}{
+      \begin{minipage}{\linewidth}
+        \begin{lstlisting}[frame=single,boxpos=t]
+          void init(struct Stack *stack)
+          {
+              // スタックのすべての要素の値を 0 にする
+              // スタックに格納されているデータ数を 0 にする
+              for (int i = 0; i < HEIGHT; i++)
+              {
+                  stack->data[i] = 0;
+              }
+              stack->volume = 0;
+          }
+        \end{lstlisting}
+      \end{minipage}
+    }\\
   \end{tabular}
   \caption{init関数}
   \label{tab:init_func}
 \end{table}
+
 
 \begin{table}[ht]
   \centering
@@ -226,7 +253,7 @@ struct Stack
   \centering
   \begin{tabular}{|c|c|}
     \hline
-    機能  & 移動可能かどうかを判別する。移動可能なら1を返し、不可能なら-1を返す。 \\
+    機能  & 移動可能かどうかを判別する。移動可能なら1を返し、不可能ならを返す。   \\
     \hline
     引数  & struct Stack stack1 : 移動元のstackのポインタ \\
         & struct Stack stack2 : 移動先のstackのポインタ \\
@@ -241,7 +268,7 @@ struct Stack
   \centering
   \begin{tabular}{|c|c|}
     \hline
-    機能  & 終了したかどうかを判別する。終了したら1を返し、終了していないなら-1を返す。 \\
+    機能  & 終了したかどうかを判別する。終了したら1を返し、終了していないなら0を返す。  \\
     \hline
     引数  & struct Stack *stack1 : 終了判定するstackのポインタ \\
         & struct Stack *stack2 : 終了判定するstackのポインタ \\
