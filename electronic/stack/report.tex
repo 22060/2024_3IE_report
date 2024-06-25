@@ -1,11 +1,10 @@
-\documentclass[a4paper,11pt]{jsarticle}
-
+\documentclass[dvipdfmx]{jsarticle}
+\usepackage[final]{graphicx}
 
 % 数式
 \usepackage{amsmath,amsfonts}
 \usepackage{bm}
 % 画像
-\usepackage[dvipdfmx]{graphicx}
 
 \include{setting.txt}
 
@@ -17,7 +16,7 @@
 \date{\today}
 \maketitle
 
-\tableofcontents
+% \tableofcontents
 
 \newpage
 
@@ -266,7 +265,7 @@ struct Stack
   \item popTest関数 --  ソースコード\ref{lst:poptest}
 \end{itemize}
 また、これらの関数を用いてstackが実際に動作するかを確認するために、main関数を作成し、pushTest関数とpopTest関数を呼び出す。
-main関数のソースコードをソースコード\ref{lst:main}に示す。わざとスタックの範囲外の動作をさせるために6回pushしたり、popしたりしている。
+main関数のソースコードをソースコード\ref{lst:main}に示す。スタックの範囲外の動作をさせるために6回push/popしている。
 \begin{lstlisting}[caption={main関数}, label={lst:main}]
   int main()
   {
@@ -375,7 +374,15 @@ main関数のソースコードをソースコード\ref{lst:main}に示す。�
   \item checkFinish関数 --  ソースコード\ref{lst:checkfinish}
 \end{itemize}
 また、これらの関数を用いてハノイの塔のプログラムを作成する。
-ハノイの塔のプログラムのmain関数をソースコード\ref{lst:main2}に示す。
+ハノイの塔のプログラムのmain関数をソースコード\ref{lst:main2}に示す。\\
+main関数に実装した移動禁止の条件とその時の動作は以下の通りである。もし移動禁止になった場合は移動できませんと表示されて今の盤面とともにもう一度入力を促す文字が表示されるようになっている。
+\begin{itemize}
+  \item 入力された数字が1以上 3以下の場合、移動元の塔と移動先の塔を関数に入力する
+  \item 移動元の塔が空の場合、移動禁止
+  \item 移動先の塔が空の場合、移動可能
+  \item 移動元の塔の一番上のブロックが移動先の塔の一番上のブロックより小さい場合、移動可能
+  \item それ以外の場合、移動禁止
+\end{itemize}
 \begin{lstlisting}[caption={main関数}, label={lst:main2}]
 int main()
 {
@@ -514,10 +521,20 @@ data :
 \end{verbatim}
 \subsection{ハノイの塔}
 ハノイの塔のプログラムを実行した結果を以下に示す。
+また、入力エラーをわざと起こしたときの実行結果を以下に示す。
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.5\textwidth]{./txt/image.png}
+  \caption{ファイルが存在するときの実行結果}
+  % \label{fig:result_pr1_dup}
+\end{figure}
+\newpage
 \input{./txt/tower.txt}
 \section{考察}
-スタックの実装を行うことで、スタックの基本的な操作を理解することが出来た。
-また、ハノイの塔のプログラムを作成することで、スタックを用いた応用的なプログラムを作成することが出来た。
+\subsection{スタックの実装}
+スタックの実験結果より、満杯のスタックにさらにpushしようとしたときにエラー表示となり中身を壊すことなく処理を終えることが出来ている。また、中身がないときにpopしようとしてもエラーが出力されている。
+このことからスタックの基本的な動作が期待通りに行われていることがわかる。
+\subsection{ハノイの塔}
 
 \section{付録:今回使用したプログラム}
 \lstinputlisting[caption={stack.c}, label={lst:stack.c}]{stack.c}
