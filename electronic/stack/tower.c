@@ -130,6 +130,10 @@ int main()
         printf("移動元塔と移動先塔を入力してください。[? ?]:");
         scanf("%d %d", &fromNumber, &toNumber);
 
+        // scanfのバッファーが0になるまで吐き出させる
+        while (getchar() != '\n')
+            ;
+
         if (fromNumber >= 1 && fromNumber <= 3 && toNumber >= 1 && toNumber <= 3)
         {
             // 移動元の塔から移動先の塔にデータを移動させる

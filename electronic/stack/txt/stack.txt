@@ -1,0 +1,26 @@
+\begin{verbatim}
+push (10) SUCCESS
+data : 10 
+push (20) SUCCESS
+data : 20 10 
+push (30) SUCCESS
+data : 30 20 10 
+push (40) SUCCESS
+data : 40 30 20 10 
+push (50) SUCCESS
+data : 50 40 30 20 10 
+push (60) FAILURE
+data : 50 40 30 20 10 
+pop (50) SUCCESS
+data : 40 30 20 10 
+pop (40) SUCCESS
+data : 30 20 10 
+pop (30) SUCCESS
+data : 20 10 
+pop (20) SUCCESS
+data : 10 
+pop (10) SUCCESS
+data : 
+pop (-1) FAILURE
+data : 
+\end{verbatim}
