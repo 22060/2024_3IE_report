@@ -306,6 +306,7 @@ struct Stack
 \begin{itemize}
   \item enableStack: 移動可能かどうかを判別する、関数の仕様は 表\ref{tab:enablestack_func}に示す。
   \item checkFinish: 終了したかどうかを判別する、関数の仕様は 表\ref{tab:checkfinish_func}に示す。
+  \item top: スタックの一番上のデータを取得する、関数の仕様は 表\ref{tab:top_func}に示す。
 \end{itemize}
 \begin{table}[ht]
   \centering
@@ -373,6 +374,27 @@ struct Stack
   \caption{checkFinish関数}
   \label{tab:checkfinish_func}
 \end{table}
+\begin{table}[ht]
+  \centering
+  \begin{tabular}{|p{5cm}|p{10cm}|}
+    \hline
+    機能  & スタックの一番上のデータを取得する。                         \\
+    \hline
+    引数  & struct Stack stack : 取得したいstackのポインタ \\
+    \hline
+    戻り値 & スタックの一番上のデータ(int)を返す。                   \\
+    % \hline
+  \end{tabular}
+  \begin{lstlisting}[frame=single]
+    int top(struct Stack tower)
+    {
+        return tower.data[tower.volume - 1];
+    }
+  \end{lstlisting}
+  \caption{top関数}
+  \label{tab:top_func}
+\end{table}
+\clearpage
 \section{実行結果}
 \subsection{スタックの実装}
 main関数を実行した結果を以下に示す。
