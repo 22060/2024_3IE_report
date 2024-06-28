@@ -27,6 +27,7 @@ int main(void)
         printf("オーダー %f[DATA^count]\n", log2((double)count) / log2((double)DATA));
         count = 0;
     }
+    
 
     return 0;
 }

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#define NUM 50
+#define NUM 500
 int comparison(int n1,int n2,int n3,int n1_index,int n2_index,int n3_index);
 void Quicksort(int *array, int left, int right);
 void swap(int *a,int *b);
