@@ -22,7 +22,7 @@ int main()
     showResult(enqueue(4));
     showResult(enqueue(5));
     // キューの中身を表示する
-    showQueue();
+    // showQueue();
     // キューからデータを取り出す
     showResult(dequeue());
     showResult(dequeue());
@@ -30,7 +30,7 @@ int main()
     showResult(dequeue());
     showResult(dequeue());
     // キューの中身を表示する
-    showQueue();
+    // showQueue();
     return 0;
 }
 
@@ -108,17 +108,18 @@ int showQueue()
     {
         printf("%d|", queue[i]);
     }
-    printf("\n");
     return 0;
 }
 
 void showResult(int result)
 {
     // result の値に応じて，対応するエラーメッセージを表示する．
+    showQueue();
+    printf("--> %d:", result);
     switch (result)
     {
     case -100:
-        printf("正常終了\n");
+        printf("enqueue 成功\n");
         break;
     case -101:
         printf("エラー：キューが満杯です\n");
@@ -136,7 +137,7 @@ void showResult(int result)
         }
         else
         {
-            printf("データ：%d\n", result);
+            printf("dequeue(%d)\n", result);
         }
         break;
     }
