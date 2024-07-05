@@ -117,6 +117,7 @@ int main(int argc, char *argv[])
         printf("マージソートの平均比較回数 %ld\n", count[4] / arg.debug);
         printf("クイックソートの平均比較回数 %ld\n", count[5] / arg.debug);
     }
+    // while(1);
     return 0;
 }
 

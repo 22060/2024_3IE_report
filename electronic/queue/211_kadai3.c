@@ -61,6 +61,10 @@ int dequeue()
         // データを取り出した後のキューを解放する(dequeue:1-2)
         // 最新のキューがないことを宣言する(dequeue:1-3)
         // 最古のキューがないことを宣言する(dequeue:1-4)
+        r_val = bottom_queue->val;
+        free(bottom_queue);
+        top_queue = NULL;
+        bottom_queue = NULL;
         
     }
     // 残りのキューが 2 個以上の場合
@@ -70,6 +74,10 @@ int dequeue()
         // 新たに最古になるキューのアドレスを覚えておく(dequeue:2-2)
         // データを取り出した後のキューを解放する(dequeue:2-3)
         // 新たに最古のキューになるアドレスを更新する(dequeue:2-4)
+        r_val = bottom_queue->val;
+        new_bottom = bottom_queue->addr;
+        free(bottom_queue);
+        bottom_queue = new_bottom;
     }
     // キューが既に空っぽの場合
     else if (bottom_queue == NULL)
@@ -87,10 +95,40 @@ int showQueue()
 {
     // リスト全体のデータを順に表示する．
     // データとデータの間に区切り文字「|」を表示する．
+    struct queue *this_queue = bottom_queue;
+    while (this_queue != 0x0)
+    {
+        printf("%d|", this_queue->val);
+        this_queue = this_queue->addr;
+    }
 }
 void showResult(int result)
 {
     // result の値に応じて，対応するエラーメッセージを表示する．
+    switch (result)
+    {
+    case -100:
+        printf("エラー：挿入するデータが 0 以下です．\n");
+        break;
+    case -101:
+        printf("エラー：メモリの確保に失敗しました．\n");
+        break;
+    case -102:
+        printf("エラー：挿入するデータが 0 以下です．\n");
+        break;
+    case -200:
+        printf("エラー：キューが空です．\n");
+        break;
+    case -201:
+        printf("エラー：キューが空です．\n");
+        break;
+    case -202:
+        printf("エラー：予期しないエラーが発生しました．\n");
+        break;
+    default:
+        printf("\n");
+        break;
+    }
 }
 void freeQueue()
 {
@@ -100,6 +138,9 @@ void freeQueue()
         // 今回開放したいキューのアドレスを取得
         // 解放後に最古になるキューのアドレスを更新
         // キューの領域を解放する
+        this_queue = bottom_queue;
+        bottom_queue = bottom_queue->addr;
+        free(this_queue);
     }
 }
 int main()
