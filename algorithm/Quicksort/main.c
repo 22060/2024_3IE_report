@@ -8,7 +8,7 @@
 #include <math.h>
 #include <string.h>
 
-int NUM = 100;
+int NUM = 50;
 
 long count[6];
 
