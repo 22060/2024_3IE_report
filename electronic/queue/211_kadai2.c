@@ -23,7 +23,7 @@ int enqueue(struct queue *obj, int data)
         return -102;
     }
     obj->array[obj->wp] = data;
-    obj->wp++;
+    obj->wp = (obj->wp + 1) % QUEUE_SIZE;
     obj->quantity++;
     return -100;
 }
@@ -39,11 +39,7 @@ int dequeue(struct queue *obj)
     }
     int data = obj->array[0];
     obj->quantity--;
-    for (int i = 0; i < obj->quantity; i++)
-    {
-        obj->array[i] = obj->array[i + 1];
-    }
-    obj->array[obj->quantity] = 0;
+    obj->array[(obj->wp+QUEUE_SIZE - obj->quantity - 1) % QUEUE_SIZE] = 0;
     return data;
 }
 int initqueue(struct queue *obj)
@@ -71,7 +67,6 @@ int showQueue(struct queue *obj)
             printf("|");
         }
     }
-    printf("\n");
     return 0;
 }
 void showResult(int result)
@@ -92,26 +87,99 @@ void showResult(int result)
     case -201:
         printf("エラー：キューが空です\n");
         break;
+    default:
+        printf("\n");
+        break;
     }
 }
 
 int main(void)
 {
     struct queue obj;
-    initqueue(&obj);
-    showResult(enqueue(&obj, 1));
-    showResult(enqueue(&obj, 2));
-    showResult(enqueue(&obj, 3));
-    showResult(enqueue(&obj, 4));
-    showResult(enqueue(&obj, 5));
-    showResult(enqueue(&obj, 6));
+    int result;
+    result = enqueue(&obj,40);
     showQueue(&obj);
-    showResult(dequeue(&obj));
-    showResult(dequeue(&obj));
-    showResult(dequeue(&obj));
-    showResult(dequeue(&obj));
-    showResult(dequeue(&obj));
-    showResult(dequeue(&obj));
+    printf("<40");
+    showResult(result);
+    result = enqueue(&obj,60);
     showQueue(&obj);
+    printf("<60");
+    showResult(result);
+    result = enqueue(&obj,10);
+    showQueue(&obj);
+    printf("<10");
+    showResult(result);
+    result = enqueue(&obj,80);
+    showQueue(&obj);
+    printf("<80");
+    showResult(result);
+    result = enqueue(&obj,30);
+    showQueue(&obj);
+    printf("<30");
+    showResult(result);
+    result = enqueue(&obj,50);
+    showQueue(&obj);
+    printf("<50");
+    showResult(result);
+    result = dequeue(&obj);
+    showQueue(&obj);
+    printf(">%d", result);
+    showResult(result);
+    result = enqueue(&obj,1);
+    showQueue(&obj);
+    printf("<1");
+    showResult(result);
+    result = enqueue(&obj,2);
+    showQueue(&obj);
+    printf("<2");
+    showResult(result);
+    result = dequeue(&obj);
+    showQueue(&obj);
+    printf(">%d", result);
+    showResult(result);
+    result = dequeue(&obj);
+    showQueue(&obj);
+    printf(">%d", result);
+    showResult(result);
+    result = dequeue(&obj);
+    showQueue(&obj);
+    printf(">%d", result);
+    showResult(result);
+    result = dequeue(&obj);
+    showQueue(&obj);
+    printf(">%d", result);
+    showResult(result);
+    result = dequeue(&obj);
+    showQueue(&obj);
+    printf(">%d", result);
+    showResult(result);
+    result = dequeue(&obj);
+    showQueue(&obj);
+    printf(">%d", result);
+    showResult(result);
+    result = dequeue(&obj);
+    showQueue(&obj);
+    printf(">%d", result);
+    showResult(result);
+    result = dequeue(&obj);
+    showQueue(&obj);
+    printf(">%d", result);
+    showResult(result);
+    result = enqueue(&obj,200);
+    showQueue(&obj);
+    printf("<200");
+    showResult(result);
+    result = enqueue(&obj,300);
+    showQueue(&obj);
+    printf("<300");
+    showResult(result);
+    result = enqueue(&obj,-400);
+    showQueue(&obj);
+    printf("<-400");
+    showResult(result);
+    result = enqueue(&obj,500);
+    showQueue(&obj);
+    printf("<500");
+    showResult(result);
     return 0;
 }

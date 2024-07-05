@@ -46,6 +46,7 @@ int enqueue(int data)
             top_queue = new_queue;
 
         }
+        r_val = 0;
     }
 
     return r_val;
@@ -96,7 +97,7 @@ int showQueue()
     // リスト全体のデータを順に表示する．
     // データとデータの間に区切り文字「|」を表示する．
     struct queue *this_queue = bottom_queue;
-    while (this_queue != 0x0)
+    while (this_queue != NULL)
     {
         printf("%d|", this_queue->val);
         this_queue = this_queue->addr;
