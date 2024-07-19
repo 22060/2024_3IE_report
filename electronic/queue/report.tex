@@ -1,23 +1,116 @@
 \documentclass[dvipdfmx]{jsarticle}
 \usepackage[final]{graphicx}
-
-
 % 数式
 \usepackage{amsmath,amsfonts}
 \usepackage{bm}
 % 画像
+% \lstset{noxoutput=true}
 
 \include{setting.txt}
 
+
 \begin{document}
 
-\title{queueの作成}
+\title{キューの作成} 
 \author{22060 211 古城隆人}
 \date{\today}
 \maketitle
 
+% \tableofcontents
 
-\lstlisting{main.c}
+\newpage
+
+
+\section{目的}
+キューのデータ構造を理解し、実装することで、キューの基本的な動作を理解する。
+\section{原理}
+\subsection{スタック}
+\section{実験環境}
+実験環境を表\ref{tab:environment}に示す。
+\begin{table}[ht]
+  \centering
+  \begin{tabular}{|c|c|}
+    \hline
+    \textbf{項目} & \textbf{値}              \\
+    \hline
+    OS          & windows10上のwsl2(Ubuntu) \\
+    \hline
+    CPU         & Intel Core i7 11800H          \\
+    \hline
+    メモリ         & 8GB                     \\
+    \hline
+    コンパイラ       & gcc 11.4.0              \\
+    \hline
+  \end{tabular}
+  \caption{実験環境}
+  \label{tab:environment}
+\end{table}
+\section{プログラムの設計と説明}
+\subsection{スタックの実装}
+スタックの実装をするために最初にソースコード\ref{lst:stackh}に示す構造体を作成する。
+また、次に作成する関数の引数としてこの構造体のポインタを渡すことで、スタックのデータを操作することが出来る。
+\subsubsection{構造体}
+この構造体はスタックのデータを格納するためのものであり、データの格納数をHEIGHTで定義している。
+\begin{lstlisting}[caption={stack.h}, label={lst:stackh}]
+#define HEIGHT 5
+struct Stack
+{
+  int data[HEIGHT];
+  int volume;
+};
+\end{lstlisting}
+\subsubsection{作成した関数}
+
+\textbf{・init関数}
+\begin{table}[ht]
+  \centering
+  \caption{init関数}
+  \begin{tabular}{|p{5cm}|p{10cm}|}
+    \hline
+    機能  & スタック構造体の中にある配列を全部0で初期化する。                  \\
+    \hline
+    引数  & struct Stack *stack : 初期化するスタックのポインタ       \\
+    \hline
+    戻り値 & なし                                         \\
+    \hline
+  \end{tabular}
+  \label{tab:init_func}
+\end{table}
+\newpage
+\begin{lstlisting}[caption={init関数}, label={lst:init_func}]
+  void init(struct Stack *stack)
+  {
+      // スタックのすべての要素の値を 0 にする
+      // スタックに格納されているデータ数を 0 にする
+      for (int i = 0; i < HEIGHT; i++)
+      {
+          stack->data[i] = 0;
+      }
+      stack->volume = 0;
+  }
+\end{lstlisting}
+この関数では、スタックの中身を初期化するために、スタックの中身を0で初期化し、スタックの中身の個数を0にする。
+\section{実行結果}
+\subsection{スタックの実装}
+main関数を実行した結果を以下に示す。
+% \lstinputlisting[style=customtxt]{./txt/stack.txt}
+データがあふれてるときやデータがないときにエラーが出力されていることがわかる。
+\subsection{ハノイの塔}
+ハノイの塔のプログラムを実行した結果を以下に示す。
+% \lstinputlisting[style=customtxt]{./txt/tower.txt}
+また、入力エラーをわざと起こしたときの実行結果を以下に示す。\\
+
+% \lstinputlisting[style=customtxt]{./txt/tower_error.txt}
+\section{考察}
+\subsection{スタックの実装}
+スタックの実験結果より、満杯のスタックにさらにpushしようとしたときにエラー表示となり中身を壊すことなく処理を終えることが出来ている。また、中身がないときにpopしようとしてもエラーが出力されている。
+このことからスタックの基本的な動作が期待通りに行われていることがわかる。
+\subsection{ハノイの塔}
+ハノイの塔の実験結果より、入力エラーも処理されて、ゲームとして完璧に動作している。そのため、スタックを用いたハノイの塔の実装が成功していることがわかる。
+
+\section{付録:今回使用したプログラム}
+% \lstinputlisting[caption={stack.c}, label={lst:stack.c}]{stack.c}
+% \lstinputlisting[caption={tower.c}, label={lst:tower.c}]{tower.c}
 
 
 \end{document}
