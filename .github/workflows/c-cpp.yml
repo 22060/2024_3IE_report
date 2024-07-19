@@ -15,6 +15,6 @@ jobs:
 
     - name: Compile and Run
       run: |
-        cd algorithm/StringMuch
+        cd electronic/queue
         make
         ./main
