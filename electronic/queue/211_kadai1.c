@@ -88,18 +88,6 @@ int initQueue()
     return 0;
 }
 
-int initqueue()
-{
-    // キューのデータを入れる配列をすべて 0 に初期化する．
-    for (int i = 0; i < QUEUE_SIZE; i++)
-    {
-        queue[i] = 0;
-    }
-    // 格納データ個数を 0 に初期化する．
-    quantity = 0;
-    return 0;
-}
-
 int showQueue()
 {
     // 配列全体のデータを順に表示する．
