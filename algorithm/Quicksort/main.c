@@ -8,7 +8,7 @@
 #include <math.h>
 #include <string.h>
 
-int NUM = 50;
+
 
 long count[6];
 
@@ -38,6 +38,7 @@ void argselection(int argc, char *argv[], args *arg);
 
 int main(int argc, char *argv[])
 {
+    int NUM = 50;
     for (int i = 0; i < 6; i++)
     {
         count[i] = 0;
@@ -55,43 +56,43 @@ int main(int argc, char *argv[])
     for (int i = 0; i < arg.debug; i++)
     {
         srand((unsigned)time(NULL));
-        for (int i = 0; i < NUM; i++)
+        for (int j = 0; j < NUM; j++)
         {
-            array[i] = rand() % 500;
+            array[j] = rand() % 500;
         }
         if (arg.isprintf)
         {
             printf("Before sorting: \n");
-            for (int i = 0; i < NUM; i++)
+            for (int j = 0; j < NUM; j++)
             {
-                printf("%d ", array[i]);
+                printf("%d ", array[j]);
             }
             printf("\n");
         }
         if (arg.debug >= 2)
         {
-            for (int i = 0; i < 4; i++)
+            for (int j = 0; j < 4; j++)
             {
                 memcpy(array2, array, sizeof(int) * NUM);
-                funcs[i](array2, NUM);
+                funcs[j](array2, NUM);
             }
 
             memcpy(array2, array, sizeof(int) * NUM);
             if (arg.isprintf)
             {
                 printf("margesort\n [ ");
-                for (int i = 0; i < NUM; i++)
+                for (int j = 0; j < NUM; j++)
                 {
-                    printf("%d ", array2[i]);
+                    printf("%d ", array2[j]);
                 }
             }
             margesort(array2, 0, NUM - 1);
             if (arg.isprintf)
             {
                 printf("] ==> [ ");
-                for (int i = 0; i < NUM; i++)
+                for (int j = 0; j < NUM; j++)
                 {
-                    printf("%d ", array2[i]);
+                    printf("%d ", array2[j]);
                 }
                 printf("]\n");
             }
@@ -101,9 +102,9 @@ int main(int argc, char *argv[])
         if (arg.isprintf)
         {
             printf("\nAfter sorting: \n");
-            for (int i = 0; i < NUM; i++)
+            for (int j = 0; j < NUM; j++)
             {
-                printf("%d ", array2[i]);
+                printf("%d ", array2[j]);
             }
         }
     }
