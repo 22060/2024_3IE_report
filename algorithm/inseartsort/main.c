@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define DATA 100000
+#define DATA 1000
 
 void insert(int *a, int n, int e);
 

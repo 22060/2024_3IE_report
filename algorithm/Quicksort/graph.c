@@ -8,8 +8,6 @@
 #include <math.h>
 #include <string.h>
 
-
-
 long count[6];
 
 struct args
@@ -38,17 +36,12 @@ void argselection(int argc, char *argv[], args *arg);
 
 int main(int argc, char *argv[])
 {
-    srand((unsigned)time(NULL));
-    int NUM = rand() % 9991 + 10;
-    for (int i = 0; i < 6; i++)
-    {
-        count[i] = 0;
-    }
+        srand((unsigned)time(NULL));
 
     argselection(argc, argv, &arg);
-    int array[NUM];
-    int array2[NUM];
-    for (int i = 0; i < NUM; i++)
+    int array[10000];
+    int array2[10000];
+    for (int i = 0; i < 10000; i++)
     {
         array[i] = 0;
         array2[i] = 0;
@@ -56,77 +49,79 @@ int main(int argc, char *argv[])
 
     for (int i = 0; i < arg.debug; i++)
     {
-        srand((unsigned)time(NULL));
+        int NUM = rand() % 9991 + 10;
         for (int j = 0; j < NUM; j++)
         {
             array[j] = rand() % 500;
         }
-        if (arg.isprintf)
-        {
-            printf("Before sorting: \n");
-            for (int j = 0; j < NUM; j++)
-            {
-                printf("%d ", array[j]);
-            }
-            printf("\n");
-        }
-        if (arg.debug >= 2)
-        {
-            for (int j = 0; j < 4; j++)
-            {
-                memcpy(array2, array, sizeof(int) * NUM);
-                funcs[j](array2, NUM);
-            }
+        // if (arg.isprintf)
+        // {
+        //     printf("Before sorting: \n");
+        //     for (int j = 0; j < NUM; j++)
+        //     {
+        //         printf("%d ", array[j]);
+        //     }
+        //     printf("\n");
+        // }
+        // if (arg.debug >= 2)
+        // {
+        //     for (int j = 0; j < 4; j++)
+        //     {
+        //         memcpy(array2, array, sizeof(int) * NUM);
+        //         funcs[j](array2, NUM);
+        //     }
 
-            memcpy(array2, array, sizeof(int) * NUM);
-            if (arg.isprintf)
-            {
-                printf("margesort\n [ ");
-                for (int j = 0; j < NUM; j++)
-                {
-                    printf("%d ", array2[j]);
-                }
-            }
-            margesort(array2, 0, NUM - 1);
-            if (arg.isprintf)
-            {
-                printf("] ==> [ ");
-                for (int j = 0; j < NUM; j++)
-                {
-                    printf("%d ", array2[j]);
-                }
-                printf("]\n");
-            }
-        }
+        //     memcpy(array2, array, sizeof(int) * NUM);
+        //     if (arg.isprintf)
+        //     {
+        //         printf("margesort\n [ ");
+        //         for (int j = 0; j < NUM; j++)
+        //         {
+        //             printf("%d ", array2[j]);
+        //         }
+        //     }
+        //     margesort(array2, 0, NUM - 1);
+        //     if (arg.isprintf)
+        //     {
+        //         printf("] ==> [ ");
+        //         for (int j = 0; j < NUM; j++)
+        //         {
+        //             printf("%d ", array2[j]);
+        //         }
+        //         printf("]\n");
+        //     }
+        // }
         memcpy(array2, array, sizeof(int) * NUM);
-        Quicksort(array2, 0, NUM - 1);
-        if (arg.isprintf)
-        {
-            printf("\nAfter sorting: \n");
-            for (int j = 0; j < NUM; j++)
-            {
-                printf("%d ", array2[j]);
-            }
-        }
+        bubblesort(array2, NUM);
+        // Quicksort(array2, 0, NUM - 1);
+        // if (arg.isprintf)
+        // {
+        //     printf("\nAfter sorting: \n");
+        //     for (int j = 0; j < NUM; j++)
+        //     {
+        //         printf("%d ", array2[j]);
+        //     }
+        // }
+        printf("%d %d", NUM, count[3]);
+        printf("\n");
+        count[3] = 0;
     }
-    printf("\n");
     if (arg.debug >= 2)
     {
-        printf("選択ソートの平均比較回数 %ld\n", count[0] / arg.debug);
-        printf("ヒープソートの平均比較回数 %ld\n", count[1] / arg.debug);
-        printf("シェルソートの平均比較回数 %ld\n", count[2] / arg.debug);
-        printf("バブルソートの平均比較回数 %ld\n", count[3] / arg.debug);
-        printf("マージソートの平均比較回数 %ld\n", count[4] / arg.debug);
-        printf("クイックソートの平均比較回数 %ld\n", count[5] / arg.debug);
+        // printf("選択ソートの平均比較回数 %ld\n", count[0] / arg.debug);
+        // printf("ヒープソートの平均比較回数 %ld\n", count[1] / arg.debug);
+        // printf("シェルソートの平均比較回数 %ld\n", count[2] / arg.debug);
+        // printf("バブルソートの平均比較回数 %ld\n", count[3] / arg.debug);
+        // printf("マージソートの平均比較回数 %ld\n", count[4] / arg.debug);
+        // printf("クイックソートの平均比較回数 %ld\n", count[5] / arg.debug);
     }
-    printf("%d %d",NUM,count[5]);
     // while(1);
     return 0;
 }
 
 void argselection(int argc, char *argv[], args *arg)
 {
-    arg->debug = 1;
+    arg->debug = 1000;
     arg->changecount = 0;
     arg->func = 0;
     arg->isprintf = 0;
