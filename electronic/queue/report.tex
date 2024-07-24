@@ -573,12 +573,6 @@ int main(void)
 \subsection{リスト構造を用いたキューの実装}
 リスト構造を用いてキューを作成するために関数の作成を行う。
 \subsubsection{作成した関数}
-%int enqueue(int data)
-%int dequeue()
-%int showQueue()
-%void showResult(int result)
-%void freeQueue()
-%個のコメントアウトの通りに関数を作成する。
 \textbf{・enqueue関数}\\
 このプログラムでは、リスト構造にキューを追加する。構造体はグローバル変数で宣言しているため、引数は追加するデータのみである。
 \begin{table}[ht]
@@ -912,15 +906,19 @@ main関数を実行した結果を以下に示す。
 \lstinputlisting[style=customtxt]{./txt/ring_utf8.txt}
 
 \subsection{リスト構造を用いたキューの実装}
+main関数を実行した結果を以下に示す。
 \lstinputlisting[style=customtxt]{./txt/list_utf8.txt}
 
 % \lstinputlisting[style=customtxt]{./txt/tower_error.txt}
 \section{考察}
-\subsection{スタックの実装}
-スタックの実験結果より、満杯のスタックにさらにpushしようとしたときにエラー表示となり中身を壊すことなく処理を終えることが出来ている。また、中身がないときにpopしようとしてもエラーが出力されている。
-このことからスタックの基本的な動作が期待通りに行われていることがわかる。
-\subsection{ハノイの塔}
-ハノイの塔の実験結果より、入力エラーも処理されて、ゲームとして完璧に動作している。そのため、スタックを用いたハノイの塔の実装が成功していることがわかる。
+\subsection{配列を用いたキューの実装}
+配列を用いたキューの実装では、配列のサイズを決めているため、あふれるとエラーが出力される。
+また、データがないときにもエラーが出力された。このことが実験結果からわかるため、正しくキューが実装されていることがわかる。
+\subsection{リングバッファを用いたキューの実装}
+リングバッファを用いたキューの実装では、配列のサイズを決めているため、あふれるとエラーが出力される。
+また、データがないときにもエラーが出力された。このことが実験結果からわかるため、正しくキューが実装されていることがわかる。
+
+\subsection{リスト構造を用いたキューの実装}
 
 \section{付録:今回使用したプログラム}
 \lstinputlisting[caption={hairetu.c}, label={lst:hairetu.c}]{211_kadai1.c}
