@@ -1,6 +1,7 @@
 #include <malloc.h>
 #include <stdio.h>
 // データと次のキューのアドレスを指す構造体の宣言
+
 struct queue
 {
     int val;

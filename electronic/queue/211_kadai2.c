@@ -97,8 +97,8 @@ int main(void)
 {
     struct queue obj;
     int result;
-    result = enqueue(&obj,40);
     initqueue(&obj);
+    result = enqueue(&obj,40);
     showQueue(&obj);
     printf("<40");
     showResult(result);
