@@ -1,5 +1,6 @@
 \documentclass[dvipdfmx]{jsarticle}
 \usepackage[final]{graphicx}
+\usepackage{float} % 追加: floatパッケージのインクルード
 % 数式
 \usepackage{amsmath,amsfonts}
 \usepackage{bm}
@@ -770,7 +771,7 @@ int dequeue()
 \end{lstlisting}  
 \newpage
 \textbf{・freeQueue関数}\\
-このプログラムでは、bottom\_queueのアドレスにあるメモリを開放してbottom\_queueに次のキューのアドレスを再代入する関数である。
+このプログラムでは、bottom\_queueのアドレスにあるメモリを開放する関数である。
 \begin{table}[ht]
   \centering
   \caption{freeQueue関数}
@@ -919,7 +920,16 @@ main関数を実行した結果を以下に示す。
 また、データがないときにもエラーが出力された。このことが実験結果からわかるため、正しくキューが実装されていることがわかる。
 
 \subsection{リスト構造を用いたキューの実装}
-
+キューが空の場合、enqueueするデータが0以下の倍のエラーが出力されているのがわかる。
+このことからリスト構造を用いたキューの実装が成功していると思われる。
+また、メイン関数のプログラムを変更してメモリを確保できない場合のエラーを出力するようにした。
+出力結果は以下の通りである。
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=15cm]{./img/image.png}
+  \caption{メモリ確保エラー}
+\end{figure}
+メモリの確保が失敗した後にパソコンの画面が一瞬真っ黒になったため、そこで実験を終了した。
 \section{付録:今回使用したプログラム}
 \lstinputlisting[caption={hairetu.c}, label={lst:hairetu.c}]{211_kadai1.c}
 \lstinputlisting[caption={ring.c}, label={lst:ring.c}]{211_kadai2.c}
