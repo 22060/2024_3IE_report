@@ -93,7 +93,7 @@ int dequeue()
     }
     return r_val;
 }
-int showQueue()
+void showQueue()
 {
     // リスト全体のデータを順に表示する．
     // データとデータの間に区切り文字「|」を表示する．
