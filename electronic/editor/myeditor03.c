@@ -13,6 +13,9 @@ WINDOW *win, *frame;
 int main(int argc, char *argv[])
 {
     char PATH[100] = "./txt/editor_save.txt";
+    if(argc == 2){
+        sprintf(PATH, "./%s", argv[1]);
+    }
     int x = 0, y = 0;
     int c;
     int mode = COMMAND_MODE;
