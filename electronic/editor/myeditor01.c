@@ -5,7 +5,7 @@
 #define MAX_X 30
 #define MAX_Y 20
 
-WINDOW *win *frame;
+WINDOW *win, *frame;
 
 int main(int argc, char *argv[])
 {
@@ -55,9 +55,6 @@ int main(int argc, char *argv[])
             {
                 x = 0;
             }
-            y++;
-            if (y >= MAX_Y)
-                y = 0;
             break;
         }
     }

@@ -8,7 +8,7 @@
 #define COMMAND_MODE 0
 #define INSERT_MODE 1
 
-WINDOW *win *frame;
+WINDOW *win, *frame;
 
 int main(int argc, char *argv[])
 {
@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
     int i = 0;
     while ((c = fgetc(fp)) != EOF)
     {
-        if (c == '\n')
+        if (x == MAX_X)
         {
             y++;
             x = 0;
@@ -45,11 +45,11 @@ int main(int argc, char *argv[])
             x++;
         }
     }
+    wrefresh(win);
 
     while (1)
     {
         wmove(win, y, x);
-        wrefresh(win);
         if (mode == COMMAND_MODE)
         {
             switch (c = getch())
@@ -88,7 +88,10 @@ int main(int argc, char *argv[])
                     {
                         fputc(mvwinch(win, i, j), fp);
                     }
-                    fputc('\n', fp);
+                    if (i != MAX_Y - 1)
+                    {
+                        fputc('\n', fp);
+                    }
                 }
                 fclose(fp);
                 exit(0);
@@ -118,9 +121,6 @@ int main(int argc, char *argv[])
                 x++;
                 if (x >= MAX_X)
                     x = 0;
-                y++;
-                if (y >= MAX_Y)
-                    y = 0;
                 if (mvinch(y, x) == ' ')
                 {
                     mvwaddch(win, y, x, c);
@@ -134,6 +134,7 @@ int main(int argc, char *argv[])
                     }
                     mvwaddch(win, y, x, c);
                 }
+                wrefresh(win);
                 break;
             }
         }

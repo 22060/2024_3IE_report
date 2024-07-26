@@ -8,7 +8,7 @@
 #define COMMAND_MODE 0
 #define INSERT_MODE 1
 
-WINDOW *win *frame;
+WINDOW *win ,*frame;
 
 int main(int argc, char *argv[])
 {
@@ -79,9 +79,6 @@ int main(int argc, char *argv[])
                 x++;
                 if (x >= MAX_X)
                     x = 0;
-                y++;
-                if (y >= MAX_Y)
-                    y = 0;
             }
         }
     }
