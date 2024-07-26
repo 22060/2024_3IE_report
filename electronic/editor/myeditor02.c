@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
             case ' ':
                 mvwaddch(win, y, x, (mvwinch(win, y, x) == ' ') ? '*' : ' ');
                 break;
-            case 'q': // ESC key
+            case 'q':
                 endwin();
                 echo();
                 exit(0);

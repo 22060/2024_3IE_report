@@ -16,13 +16,14 @@ int main(int argc, char *argv[])
     int x = 0, y = 0;
     int c;
     int mode = COMMAND_MODE;
+    char str;
 
     initscr();
     frame = newwin(MAX_Y + 2, MAX_X + 2, 1, 1);
     box(frame, '|', '-');
+    wrefresh(frame);
     win = newwin(MAX_Y, MAX_X, 2, 2);
     noecho();
-    wrefresh(frame);
     // ファイルを開いて読み込む
     FILE *fp;
     if ((fp = fopen(PATH, "r")) == NULL)
@@ -32,24 +33,24 @@ int main(int argc, char *argv[])
     }
     // ファイルの内容を画面に表示
     int i = 0;
-    while ((c = fgetc(fp)) != EOF)
-    {
-        if (x == MAX_X)
-        {
-            y++;
-            x = 0;
-        }
-        else
-        {
-            mvwaddch(win, y, x, c);
-            x++;
-        }
-    }
-    wrefresh(win);
 
     while (1)
     {
         wmove(win, y, x);
+        wrefresh(win);
+        while ((c = fgetc(fp)) != EOF)
+        {
+            if (x == MAX_X)
+            {
+                y++;
+                x = 0;
+            }
+            else
+            {
+                mvwaddch(win, y, x, c);
+                x++;
+            }
+        }
         if (mode == COMMAND_MODE)
         {
             switch (c = getch())
@@ -73,7 +74,7 @@ int main(int argc, char *argv[])
             case ' ':
                 mvwaddch(win, y, x, (mvwinch(win, y, x) == ' ') ? '*' : ' ');
                 break;
-            case 'q': // ESC key
+            case 'q':
                 endwin();
                 echo();
                 // ファイルに書き込む
@@ -102,7 +103,15 @@ int main(int argc, char *argv[])
                 x = 0;
                 break;
             case '$':
-                x = MAX_X - 1;
+                // 文字があるところまでカーソルを移動
+                for (int i = MAX_X - 1; i >= 0; i--)
+                {
+                    if (mvwinch(win, y, i) != ' ')
+                    {
+                        x = i+1;
+                        break;
+                    }
+                }
                 break;
             default:
                 break;
@@ -118,10 +127,7 @@ int main(int argc, char *argv[])
             default:
                 // 上書きではなく挿入できるようにする
 
-                x++;
-                if (x >= MAX_X)
-                    x = 0;
-                if (mvinch(y, x) == ' ')
+                if (mvwinch(win, y, x) == ' ')
                 {
                     mvwaddch(win, y, x, c);
                 }
@@ -130,11 +136,14 @@ int main(int argc, char *argv[])
                     // 1文字ずつ右にずらす
                     for (int i = MAX_X - 1; i > x; i--)
                     {
-                        mvwaddch(win, y, i, mvwinch(win, y, i - 1));
+                        str = mvwinch(win, y, i - 1);
+                        mvwaddch(win, y, i, str);
                     }
                     mvwaddch(win, y, x, c);
                 }
-                wrefresh(win);
+                x++;
+                if (x >= MAX_X)
+                    x = 0;
                 break;
             }
         }
