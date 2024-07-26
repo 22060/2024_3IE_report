@@ -15,6 +15,6 @@ jobs:
 
     - name: Compile and Run
       run: |
-        cd electronic/queue
+        cd algorithm/Quicksort
         make
         ./main
