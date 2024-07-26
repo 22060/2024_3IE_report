@@ -233,15 +233,15 @@ int main()
     printf("<500");
     showResult(result);
 
-    for(long i = 0; i < 10000000000;i++){
-        result = enqueue(i);
-        // showQueue();
-        // printf("<%ld",i);
-        if(result != 0){
-            showResult(result);
-            break;
-        }
-    }
+    // for(long i = 0; i < 10000000000;i++){
+    //     result = enqueue(i);
+    //     // showQueue();
+    //     // printf("<%ld",i);
+    //     if(result != 0){
+    //         showResult(result);
+    //         break;
+    //     }
+    // }
 
     freeQueue();
 
