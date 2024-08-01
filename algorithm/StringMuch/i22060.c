@@ -1,6 +1,8 @@
 #include <stdio.h>
 #define STR_NUM 2500
 
+
+char teststr[STR_NUM] = "In recent years, the push for renewable energy has gained significant momentum worldwide. Governments, corporations, and environmental organizations are increasingly recognizing the urgent need to transition from fossil fuels to sustainable energy sources. The latest developments in solar, wind, and hydroelectric power are making this transition more feasible and promising.One of the most notable advancements is in solar energy technology. New high-efficiency solar panels are now capable of converting more sunlight into electricity than ever before. This increased efficiency, combined with decreasing production costs, is making solar power a viable option for both residential and commercial use. Additionally, innovative storage solutions are addressing one of the key challenges of solar energyits intermittent nature. Advanced battery systems are now able to store excess energy generated during sunny periods, providing a reliable power source even when the sun is not shining.Wind energy is also seeing significant improvements. Modern wind turbines are designed to capture wind more effectively and operate in a wider range of wind conditions. Offshore wind farms, in particular, are emerging as a major source of renewable energy. These farms take advantage of stronger and more consistent winds found over the ocean, significantly boosting their energy output.Hydroelectric power remains a cornerstone of renewable energy strategies. Recent projects are focusing on small-scale hydroelectric systems that minimize environmental impact while providing power to remote and rural areas. These systems harness the energy of flowing water from rivers and streams, offering a sustainable and reliable energy source.The transition to renewable energy is not without its challenges. Infrastructure upgrades, regulatory changes, and significant financial investments are required to support this shift. However, the long-term benefits of reducing carbon emissions, combating climate change, and ensuring energy security are driving forces behind the global commitment to renewable energy.As the world continues to innovate and invest in renewable energy solutions, the vision of a sustainable future is becoming increasingly attainable. The combined efforts of technology advancements, policy support, and public awareness are set to transform the energy landscape, paving the way for a cleaner, greener planet.";
 typedef struct args
 {
     int debug;
@@ -9,6 +11,7 @@ typedef struct args
     char str2[STR_NUM];
     int usefile;
     int isprintresult;
+    int issame;
 } args;
 
 args arg;
@@ -16,6 +19,9 @@ args arg;
 int main(int argc, char *argv[])
 {
     argselection(argc, argv, &arg);
+    if(arg.issame == 1){
+        return 0;
+    }
     // 変数の宣言
     FILE *fp;
     char str[STR_NUM];
@@ -151,8 +157,9 @@ int main(int argc, char *argv[])
 void argselection(int argc, char *argv[], args *arg)
 {
     arg->debug = 0;
-    arg->filename = "example.txt";
-    arg->usefile = 1;
+    arg->filename = "";
+    arg->usefile = 0;
+    arg->isprintresult = 0;
     strcpy(arg->str1, "");
     strcpy(arg->str2, "energy");
     //-fがあった場合、usefileを1にして、次の引数をfilenameに入れる
@@ -200,5 +207,16 @@ void argselection(int argc, char *argv[], args *arg)
         printf("usefile:%d\n", arg->usefile);
         printf("str1:%s\n", arg->str1);
         printf("str2:%s\n", arg->str2);
+    }
+    if((strcmp(arg->str1, arg->str2) == 0) && arg->usefile == 0){
+        //比較するものがないエラー
+        printf("error: no string to compare\n");
+        arg->issame = 1;
+    }
+    else{
+        arg->issame = 0;
+    }
+    if(strcmp(arg->str1, "") == 0 && arg->usefile == 0){
+        strcpy(arg->str1, teststr);
     }
 }
