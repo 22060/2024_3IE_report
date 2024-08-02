@@ -13,7 +13,8 @@ WINDOW *win, *frame;
 int main(int argc, char *argv[])
 {
     char PATH[100] = "./txt/editor_save.txt";
-    if(argc == 2){
+    if (argc == 2)
+    {
         sprintf(PATH, "./%s", argv[1]);
     }
     int x = 0, y = 0;
@@ -36,6 +37,7 @@ int main(int argc, char *argv[])
     }
     // ファイルの内容を画面に表示
     int i = 0;
+    int flag = 0;
 
     while (1)
     {
@@ -53,6 +55,12 @@ int main(int argc, char *argv[])
                 mvwaddch(win, y, x, c);
                 x++;
             }
+        }
+        if (flag == 0)
+        {
+            x = 0;
+            y = 0;
+            flag = 1;
         }
         if (mode == COMMAND_MODE)
         {
@@ -111,11 +119,16 @@ int main(int argc, char *argv[])
                 {
                     if (mvwinch(win, y, i) != ' ')
                     {
-                        x = i+1;
+                        x = i + 1;
                         break;
                     }
                 }
                 break;
+            case 'o':
+                y++;
+                x = 0;
+                break;
+
             default:
                 break;
             }
