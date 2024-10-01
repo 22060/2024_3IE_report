@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
         wrefresh(win);
         if (mode == COMMAND_MODE)
         {
-            switch (c = getch())
+            switch (c = getchar())
             {
             case 'h':
                 if (x > 0)
@@ -69,7 +69,7 @@ int main(int argc, char *argv[])
         }
         else
         {
-            switch (c = getch())
+            switch (c = getchar())
             {
             case 27: // ESC key
                 mode = COMMAND_MODE;

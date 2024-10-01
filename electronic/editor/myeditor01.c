@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
     {
         wmove(win, y, x);
         wrefresh(win);
-        switch (c = getch())
+        switch (c = getchar())
         {
         case 'h':
             if (x > 0)
