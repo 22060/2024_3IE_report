@@ -33,12 +33,12 @@ void init(void){
     STB.CR4.BIT._CMT = 0;		// モジュールスタンバイ解除
     //CMT0
 	CMT0.CMCSR.BIT.CKS = 0;		// ① CKS設定(0:1/8, 1:1/32, 2:1/128, 3:1/512)
-	CMT0.CMCOR = 25 - 1;		// ②
+	CMT0.CMCOR = 1;		// ②
 
 	Timer0 = start_t;		// ③ CMT0 カウント開始
 	//CMT1
-	CMT1.CMCSR.BIT.CKS = 3;		// ① CKS設定(0:1/8, 1:1/32, 2:1/128, 3:1/512)
-	CMT1.CMCOR = 10 - 1;		// ②
+	CMT1.CMCSR.BIT.CKS = 0;		// ① CKS設定(0:1/8, 1:1/32, 2:1/128, 3:1/512)
+	CMT1.CMCOR = 1;		// ②
 	Timer1 = start_t;
     //IO init
 	//SPK
