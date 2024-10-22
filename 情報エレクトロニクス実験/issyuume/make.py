@@ -4,7 +4,7 @@ import xml.etree.ElementTree as et
 
 DRAWIO_PATH = '"C:\Program Files\draw.io\draw.io.exe"'
 ROOT_DIR = Path(__file__).resolve().parent
-INPUT_DIR = ROOT_DIR / "drawio"
+INPUT_DIR = ROOT_DIR / "images"
 OUTPUT_DIR = ROOT_DIR / "images"
 
 def generate_image(input_path : Path):
