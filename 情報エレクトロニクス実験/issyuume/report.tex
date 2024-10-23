@@ -13,6 +13,9 @@
 \usepackage{float}
 \usepackage{tikz}
 \usepackage{askmaps}
+\usepackage{multirow}
+\usepackage{bigstrut}
+\usepackage{slashbox}
 \begin{document}
 
 \title{デコーダ回路の設計と制作}
@@ -31,7 +34,7 @@
 図\ref{fig:breadboard}にブレッドボード写真を示す。
 \begin{figure}[h]
   \centering
-  \includegraphics[width=10cm]{./images/breadboard.jpg}
+  \includegraphics[width=10cm]{./images/breadboard.drawio.png}
   \caption{ブレッドボードの内部構造}
   \label{fig:breadboard}
 \end{figure}
@@ -46,7 +49,7 @@
 7セグメントLEDの略図を図\ref{fig:7seg}に示す。基本的に一番上から時計回りにaからgまでのLEDが配置されている。
 \begin{figure}[h]
   \centering
-  \includegraphics[width=10cm]{./images/7seg.png}
+  \includegraphics[width=5cm]{./images/7seg.png}
   \caption{7セグメントLEDの略図}
   \label{fig:7seg}
 \end{figure}
@@ -126,31 +129,28 @@ ICによってシンク電流、ソース電流の値が異なるのでデータ
 これを簡単にすると、 \eqref{eq:b-output1} となる。6個の論理素子の使用から、3個の論理素子の使用に減らすことが出来る。
 カルノー図から論理式を立てて簡略化してないように見えるが真理値表から論理式を立てた場合、出力がHIGHの量の数 $\times$  3個の論理素子が必要になる式になる。
 そのため今回ではカルノー図にする前は30個の論理素子が必要であった。
-\begin{align}
-  B = \overline{EN} + IN_0 \cdot \overline{IN_1} \cdot IN_2 + \overline{IN_0} \cdot IN_1 \cdot IN_2 \tag{Bの出力 計算前}\label{eq:b-output}\\
-  B = \overline{EN} + IN_2 \cdot (IN_0 \oplus IN_1  )\tag{Bの出力 計算後} \label{eq:b-output1}
-\end{align}
-
 
 \begin{figure}[htbp]
+  \begin{minipage}[b]{0.49\columnwidth}
   \centering
   \askmapiv{\(B\)}{{\(EN\)}{\(IN_0\)}{\(IN_1\)}{\(IN_2\)}}{}{11111111{\phantom{0}}{\phantom{0}}{\phantom{0}}{\phantom{0}}{\phantom{0}}11{\phantom{0}}}{}
   \caption{\(B\)のカルノー図}
   \label{}
-\end{figure}
-\begin{figure}[htbp]
+  \end{minipage}
+  \begin{minipage}[b]{0.49\columnwidth}
   \centering
   \askmapiv{\(B\)}{{\(EN\)}{\(IN_0\)}{\(IN_1\)}{\(IN_2\)}}{}{11111111{\phantom{0}}{\phantom{0}}{\phantom{0}}{\phantom{0}}{\phantom{0}}11{\phantom{0}}}
   {
-   \color{red}\put(0.85,2){\oval(1.8,3.8)}
-   \color{red}\put(1.9,2.5){\oval(1.8,0.8)}
-   \color{red}\put(1.9,0.5){\oval(1.8,0.8)}
+   \color{black}\put(0.85,2){\oval(1.8,3.8)}
+   \color{black}\put(1.9,2.5){\oval(1.8,0.8)}
+   \color{black}\put(1.9,0.5){\oval(1.8,0.8)}
   }
   \caption{\(B\)のカルノー図}
   \label{fig:karno1}
+  \end{minipage}
 \end{figure}
 
-\newpage
+
 \section{実験方法}
 \subsection{論理式の作成}
 デコーダ回路の回路図を作成するために真理値表を作成して論理式を立てていく。
@@ -175,55 +175,194 @@ ICによってシンク電流、ソース電流の値が異なるのでデータ
   \end{tabular}
   \label{tab:truth}
 \end{table}
-\begin{figure}
+\\
+7セグLEDの端子$A$を図\ref{fig:karnoA}に示す。これを基に論理式を作成すると、数式\eqref{eq:a-output}となる。
+これを簡単にすると、数式\eqref{eq:a-output1}となる。\\
+7セグLEDの端子$B$を図\ref{fig:karnoB}に示す。これを基に論理式を作成すると、数式\eqref{eq:b-output}となる。
+これを簡単にすると、数式\eqref{eq:b-output1}となる。\\
+7セグLEDの端子$C$を図\ref{fig:karnoC}に示す。これを基に論理式を作成すると、数式\eqref{eq:c-output}となる。\\
+7セグLEDの端子$D$を図\ref{fig:karnoD}に示す。これを基に論理式を作成すると、数式\eqref{eq:d-output}となる。
+これを簡単にすると、数式\eqref{eq:d-output1}となる。\\
+7セグLEDの端子$E$を図\ref{fig:karnoE}に示す。これを基に論理式を作成すると、数式\eqref{eq:e-output}となる。\\
+7セグLEDの端子$F$を図\ref{fig:karnoF}に示す。これを基に論理式を作成すると、数式\eqref{eq:f-output}となる。
+これを簡単にすると、数式\eqref{eq:f-output1}となる。\\
+7セグLEDの端子$G$を図\ref{fig:karnoG}に示す。これを基に論理式を作成すると、数式\eqref{eq:g-output}となる。
+\begin{align}
+  A &= \overline{EN} + \overline{IN_2} \cdot \overline{IN_1} \cdot IN_0 + IN_2 \cdot \overline{IN_1} \cdot \overline{IN_0} \label{eq:a-output}\\
+  &= \overline{EN} + \overline{IN_2} \cdot ( IN_2 \oplus IN_0)\label{eq:a-output1}\\
+  B &= \overline{EN} + IN_0 \cdot \overline{IN_1} \cdot IN_2 + \overline{IN_0} \cdot IN_1 \cdot IN_2 \label{eq:b-output}\\
+  &= \overline{EN} + IN_2 \cdot (IN_0 \oplus IN_1  ) \label{eq:b-output1}\\
+  C &= \overline{EN} + \overline{IN_2} \cdot IN_1 \cdot \overline{IN_0}\label{eq:c-output}\\
+  D &= \overline{EN} + IN_2 \cdot IN_1 \cdot IN_0 + IN_2 \cdot \overline{IN_1} \cdot \overline{IN_0} + \overline{IN_2} \cdot \overline{IN_1} \cdot IN_0\label{eq:d-output}\\
+  &= \overline{EN} + IN_1 \cdot (IN_2 \oplus IN_0) + IN_2 \cdot IN_1 \cdot IN_0\label{eq:d-output1}\\
+  E &= \overline{EN} + IN_0 + \overline{IN_1} \cdotp IN_2\label{eq:e-output}\\
+  F &= \overline{EN} + IN_0 \cdot \overline{IN_2} + IN_1 \cdot \overline{IN_2}\label{eq:f-output}\\
+  &= \overline{EN} + \overline{IN_2} \cdot (IN_0 + IN_1) \label{eq:f-output1}\\
+  G &= \overline{EN} + \overline{IN_2} \cdot \overline{IN_1}+ IN_2 \cdot IN_1 \cdot IN_0\label{eq:g-output}
+\end{align}
+% \begin{figure}[htbp]
+%   \centering
+%     \begin{tabular}{|cc|c|c|c|c|}
+%     \hline
+% 	\multicolumn{2}{|c|}{\multirow{2}{*}{\backslashbox{$IN_1$\quad $IN_0$}{$EN$ \quad $IN_2$}}} & \multirow{2}[2]{*}{0  0} & \multirow{2}[2]{*}{0  1} & \multirow{2}[2]{*}{1   1} &
+% 	\multirow{2}[2]{*}{1 0} \bigstrut[t]\\
+%           &       &       &       &  	& \bigstrut[b]\\
+%     \hline
+%     0     & 0     &1       &1       &1       &  \bigstrut\\
+%     \hline
+%     0     & 1     &1       &1       &       &1  \bigstrut\\
+%     \hline
+%     1     & 1     &1       &1       &       &  \bigstrut\\
+%     \hline
+%     1     & 0     &1       &1       &       &  \bigstrut\\
+%     \hline
+%     \end{tabular}%
+%   \caption{Aのカルノー図}
+%   \label{fig:KarnaughMapFormat}%
+% \end{figure}%
+% \begin{figure}[htbp]
+%   \centering
+%     \begin{tabular}{|cc|c|c|c|c|}
+%     \hline
+% 	\multicolumn{2}{|c|}{\multirow{2}{*}{\backslashbox{$IN_1$\quad $IN_0$}{$EN$ \quad $IN_2$}}} & \multirow{2}[2]{*}{0  0} & \multirow{2}[2]{*}{0  1} & \multirow{2}[2]{*}{1   1} &
+% 	\multirow{2}[2]{*}{1 0} \bigstrut[t]\\
+%           &       &       &       &  	& \bigstrut[b]\\
+%     \hline
+%     0     & 0     &1       &1       &       &  \bigstrut\\
+%     \hline
+%     0     & 1     &1       &1       &1       &  \bigstrut\\
+%     \hline
+%     1     & 1     &1       &1       &       &  \bigstrut\\
+%     \hline
+%     1     & 0     &1       &1       &1       &  \bigstrut\\
+%     \hline
+%     \end{tabular}%
+%   \caption{Bのカルノー図}
+%   \label{fig:KarnaughMapFormatb}%
+% \end{figure}%
+
+\begin{figure}[h]
+  \begin{minipage}[b]{0.49\columnwidth}
   \centering
   \askmapiv{\(A\)}{{\(EN\)}{\(IN_2\)}{\(IN_1\)}{\(IN_0\)}}{}{11111111{\phantom{0}}1{\phantom{0}}{\phantom{0}}1{\phantom{0}}{\phantom{0}}{\phantom{0}}}
   {
     
-   \color{red}\put(0.85,2){\oval(1.8,3.8)}
-   \color{red}\put(1.9,3.5){\oval(1.8,0.8)}
-   \color{red}\put(3.9,2.5){\oval(1.8,0.8)[l]}
-   \color{red}\put(-0.1,2.5){\oval(1.8,0.8)[r]}
+   \color{black}\put(0.85,2){\oval(1.8,3.8)}
+   \color{black}\put(1.9,3.5){\oval(1.8,0.8)}
+   \color{black}\put(3.9,2.5){\oval(1.8,0.8)[l]}
+   \color{black}\put(-0.1,2.5){\oval(1.8,0.8)[r]}
    
   }
   \caption{\(A\)のカルノー図}
   \label{fig:karnoA}
-\end{figure}
-\begin{figure}[htbp]
+  \end{minipage}
+  \begin{minipage}[b]{0.49\columnwidth}
   \centering
   \askmapiv{\(B\)}{{\(EN\)}{\(IN_2\)}{\(IN_1\)}{\(IN_0\)}}{}{11111111{\phantom{0}}{\phantom{0}}{\phantom{0}}{\phantom{0}}{\phantom{0}}11{\phantom{0}}}
   {
-   \color{red}\put(0.85,2){\oval(1.8,3.8)}
-   \color{red}\put(1.9,2.5){\oval(1.8,0.8)}
-   \color{red}\put(1.9,0.5){\oval(1.8,0.8)}
+   \color{black}\put(0.85,2){\oval(1.8,3.8)}
+   \color{black}\put(1.9,2.5){\oval(1.8,0.8)}
+   \color{black}\put(1.9,0.5){\oval(1.8,0.8)}
   }
   \caption{\(B\)のカルノー図}
   \label{fig:karnoB}
+  \end{minipage}
 \end{figure}
 \begin{figure}[htbp]
   \centering
+  \begin{minipage}[b]{0.49\columnwidth}
   \askmapiv{\(C\)}{{\(EN\)}{\(IN_2\)}{\(IN_1\)}{\(IN_0\)}}{}{11111111{\phantom{0}}1{\phantom{0}}{\phantom{0}}{\phantom{0}}{\phantom{0}}{\phantom{0}}{\phantom{0}}}
   {
-   \color{red}\put(0.85,2){\oval(1.8,3.8)}
-   \color{red}\put(3.9,2.5){\oval(1.8,0.8)[l]}
-   \color{red}\put(-0.1,2.5){\oval(1.8,0.8)[r]}
+   \color{black}\put(0.85,2){\oval(1.8,3.8)}
+   \color{black}\put(3.9,2.5){\oval(1.8,0.8)[l]}
+   \color{black}\put(-0.1,2.5){\oval(1.8,0.8)[r]}
   }
   \caption{\(C\)のカルノー図}
   \label{fig:karnoC}
-\end{figure}
-\begin{figure}[htbp]
+  \end{minipage}
+  \begin{minipage}[b]{0.49\columnwidth}
   \centering
   \askmapiv{\(D\)}{{\(EN\)}{\(IN_2\)}{\(IN_1\)}{\(IN_0\)}}{}{11111111{\phantom{0}}1{\phantom{0}}{\phantom{0}}1{\phantom{0}}{\phantom{0}}1}{
-    \color{red}\put(0.85,2){\oval(1.8,3.8)}
-    \color{red}\put(3.9,2.5){\oval(1.8,0.8)[l]}
-    \color{red}\put(-0.1,2.5){\oval(1.8,0.8)[r]}
-    \color{red}\put(1.9,3.5){\oval(1.8,0.8)}
-    \color{red}\put(1.9,1.5){\oval(1.8,0.8)}
+    \color{black}\put(0.85,2){\oval(1.8,3.8)}
+    \color{black}\put(3.9,2.5){\oval(1.8,0.8)[l]}
+    \color{black}\put(-0.1,2.5){\oval(1.8,0.8)[r]}
+    \color{black}\put(1.9,3.5){\oval(1.8,0.8)}
+    \color{black}\put(1.9,1.5){\oval(1.8,0.8)}
   }
   \caption{\(D\)のカルノー図}
   \label{fig:karnoD}
+  \end{minipage}
+\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \begin{minipage}[b]{0.49\columnwidth}
+  \askmapiv{\(E\)}{{\(EN\)}{\(IN_2\)}{\(IN_1\)}{\(IN_0\)}}{}{11111111{\phantom{0}}1{\phantom{0}}111{\phantom{0}}1}{
+    \color{black}\put(0.85,2){\oval(1.8,3.8)}
+    \color{black}\put(1.9,2.0){\oval(3.8,1.8)}
+    \color{black}\put(1.9,3.0){\oval(1.8,1.8)}
+  }
+  \caption{\(E\)のカルノー図}
+  \label{fig:karnoE}
+  \end{minipage}
+  \begin{minipage}[b]{0.49\columnwidth}
+  \centering
+  \askmapiv{\(F\)}{{\(EN\)}{\(IN_2\)}{\(IN_1\)}{\(IN_0\)}}{}{11111111{\phantom{0}}1{\phantom{0}}{\phantom{0}}1{\phantom{0}}1}{
+    \color{black}\put(0.85,2){\oval(1.8,3.8)}
+    \color{black}\put(3.9,2.5){\oval(1.8,0.8)[l]}
+    \color{black}\put(-0.1,2.5){\oval(1.8,0.8)[r]}
+    \color{black}\put(1.9,4.0){\oval(1.8,1.8)[b]}
+    \color{black}\put(1.9,0.0){\oval(1.8,1.8)[t]}
+  }
+  \caption{\(F\)のカルノー図}
+  \label{fig:karnoF}
+  \end{minipage}
+\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \askmapiv{\(G\)}{{\(EN\)}{\(IN_2\)}{\(IN_1\)}{\(IN_0\)}}{}{111111111{\phantom{0}}{\phantom{0}}{\phantom{0}}{\phantom{0}}{\phantom{0}}{\phantom{0}}1}{
+    \color{black}\put(0.85,2){\oval(1.8,3.8)}
+    \color{black}\put(3.9,3.5){\oval(1.8,0.8)[l]}
+    \color{black}\put(-0.1,3.5){\oval(1.8,0.8)[r]}
+    \color{black}\put(1.9,1.5){\oval(1.8,0.8)}
+  }
+  \caption{\(G\)のカルノー図}
+  \label{fig:karnoG}
 \end{figure}
 \newpage
+\newpage
+\subsection{回路図の作成}
+作成した論理式を基に回路図を作成する。端子ごとに論理式を立てたが、共通して使えるところがあるので、それを使用して回路を作成する。
+作成した回路図を図\ref{fig:circit}に示す。
+\begin{figure}[h]
+  \centering
+  \includegraphics[width=10cm]{./images/circit.png}
+  \caption{回路図}
+  \label{fig:circit}
+\end{figure}
+\subsection{ブレッドボードへの配線}
+作成した回路図を基にブレッドボードへの配線を行う。使用する部品を表\ref{tab:parts}に示す。
+\begin{figure}
+  \centering
+  \begin{tabular}{|c|c|c|}
+    \hline
+    部品名 & 数量 & 用途 \\
+    \hline
+    ブレッドボード & 1 & 配線用部品 \\
+    74LS04 & 2 & NOT回路 \\
+    74LS08 & 2 & AND回路 \\
+    74LS32 & 4 & OR回路 \\
+    74LS86 & 2 & XOR回路 \\
+    7セグLED & 1 & 表示部品 \\
+    ピンヘッダ & 1 & ブレッドボードと基盤の接続 \\
+    ブレッドボード & 1 & 配線用部品 \\
+    エンコーダ回路 & 1 & 2進数から10進数への変換 \\
+    抵抗(380 $\Omega$) & 7 & 7セグLEDの入力電流制御 \\
+    \hline
+  \end{tabular}
+  \caption{使用部品}
+  \label{tab:parts}
+\end{figure}
+
 \section{結果}
 
 \section{考察}

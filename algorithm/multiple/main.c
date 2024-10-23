@@ -7,9 +7,10 @@ int main(void){
 
     p = (unsigned char *)&y;
     printf("%02x %02x %02x %02x\n", *(p), *(p+1), *(p+2), *(p+3));
-    for(int i = 0; i < 32; i++){
+    for(int i = 0; i < sizeof(p)*8; i++){
         // printf("%d ",*(p+3 - (i/8)));
         printf("%d", *(p+3 - (i/8))>>(7 - i%8) & 1);
-        printf("%c", i%8 == 7 ? ' ' : '\0');
+        if(i%8 == 7) printf(" ");
     }
+    return 0;
 }
