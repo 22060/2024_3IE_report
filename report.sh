@@ -9,10 +9,10 @@
 read -p "Enter the directory name: " dir_name
 
 # Create the directory
-mkdir -p "/home/kj/report/2024_3IE_report/$dir_name"
+mkdir -p "./$dir_name"
 
 # Create the main.c file
-touch "/home/kj/report/2024_3IE_report/$dir_name/main.c"
+touch "./$dir_name/main.c"
 
 # Create the build/Debug directory
-mkdir -p "/home/kj/report/2024_3IE_report/$dir_name/build/Debug"
+mkdir -p "./$dir_name/build/Debug"

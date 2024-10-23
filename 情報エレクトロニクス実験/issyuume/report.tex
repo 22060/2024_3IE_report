@@ -1,13 +1,18 @@
-\documentclass[a4paper,11pt]{jsarticle}
+\documentclass[a4paper,11pt,dvipdfmx]{jsarticle}
 
 
 % 数式
 \usepackage{amsmath,amsfonts}
 \usepackage{bm}
 % 画像
+% \documentclass{article}
 \usepackage[dvipdfmx]{graphicx}
-
-
+\usepackage{circuitikz}
+\usepackage{amsmath,amssymb}
+\usepackage{siunitx}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{askmaps}
 \begin{document}
 
 \title{デコーダ回路の設計と制作}
@@ -66,7 +71,7 @@ AND、OR、NOT、XORの真理値表を表\ref{tab:logic}に示す。今回では
 \begin{table}[h]
   \centering
   \caption{論理演算の真理値表}
-  \begin{tabular}{|c|c|c|c|c|c|c}
+  \begin{tabular}{|c|c|c|c|c|c|c|}
     \hline
     A & B & AND & OR & NOT (A) & NOT (B) & XOR \\
     \hline
@@ -98,7 +103,7 @@ IC内部で発生するこれらの電流のことを前者をシンク電流、
   \caption{トランジスタの特性}
   \label{fig:transistor}
 \end{figure}
-ICによって真紅電流、ソース電流の値が異なるのでデータシートで確認を行い、電子回路を組むことが出来るのかを把握する必要がある。
+ICによってシンク電流、ソース電流の値が異なるのでデータシートで確認を行い、電子回路を組むことが出来るのかを把握する必要がある。
 例えば今回ではアノードコモンのLEDを制御するため出力端子にLEDのカソードを接続し、シンク電流を流すことでLEDを光らせる。
 そのため、$I_{ol}$の電流を確認する必要がある。$I_{ol}$はシンク電流、$I_{oh}$はソース電流である。
 \textbf{ICの入力端子}
@@ -106,8 +111,119 @@ ICによって真紅電流、ソース電流の値が異なるのでデータシ
 いずれも14ピンのDIP型のICである。DIPとはDual Inline Packageの略称であり、パッケージの表面にくぼみがあるのが特徴である。
 このくぼみがあるほうを表、端子が出てるほうが裏である。表の状態でくぼみを上にした時に、左上から反時計回りに1から14までの数字が命名されている。
 74シリーズでは7番に$GND$、14番に$+5V$を接続する。それ以外の端子は入出力端子である。
-\section{実験方法}
+\subsection{ピンヘッダ}
+ピンヘッダを用いて、2進数から10進数に変換する基盤とブレッドボードを接続する。
+今回使うピンヘッダは$2\times 7$、端子間距離が$2.54mm$である。
+これは一般的なピンヘッダの端子間距離であり今回使用するブレッドボードもこの端子間距離である。
+2列のピンヘッダをブレッドボードにそのまま刺すと、2つのピンがショートしてしまうため、T字型コネクタを用いる。
+\subsection{カルノー図}
+デコーダ回路は複雑な回路になるため、論理式を立てる。論理式は真理値表を基に作成することが出来るが、複雑な回路になると論理式が複雑になる。
+そのため、カルノー図を使用することで論理式を簡単に作成することが出来る。
+カルノー図は出力の数だけ表を作成し、論理式の作成を行う。表 \ref{tab:karno}にカルノー図の例を示す。
+これは7セグLEDのB端子用のカルノー図である。真理値表からここから論理式の計算を行う。
+まず初めに、表の中で1の部分をグループ化を行う。その後、グループ化した部分を論理式に変換する。
+グループ化したものを\ref{fig:karno1}に示す。これを論理式に変換すると 数式\eqref{eq:b-output} となる。
+これを簡単にすると、 \eqref{eq:b-output1} となる。6個の論理素子の使用から、3個の論理素子の使用に減らすことが出来る。
+カルノー図から論理式を立てて簡略化してないように見えるが真理値表から論理式を立てた場合、出力がHIGHの量の数 $\times$  3個の論理素子が必要になる式になる。
+そのため今回ではカルノー図にする前は30個の論理素子が必要であった。
+\begin{align}
+  B = \overline{EN} + IN_0 \cdot \overline{IN_1} \cdot IN_2 + \overline{IN_0} \cdot IN_1 \cdot IN_2 \tag{Bの出力 計算前}\label{eq:b-output}\\
+  B = \overline{EN} + IN_2 \cdot (IN_0 \oplus IN_1  )\tag{Bの出力 計算後} \label{eq:b-output1}
+\end{align}
 
+
+\begin{figure}[htbp]
+  \centering
+  \askmapiv{\(B\)}{{\(EN\)}{\(IN_0\)}{\(IN_1\)}{\(IN_2\)}}{}{11111111{\phantom{0}}{\phantom{0}}{\phantom{0}}{\phantom{0}}{\phantom{0}}11{\phantom{0}}}{}
+  \caption{\(B\)のカルノー図}
+  \label{}
+\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \askmapiv{\(B\)}{{\(EN\)}{\(IN_0\)}{\(IN_1\)}{\(IN_2\)}}{}{11111111{\phantom{0}}{\phantom{0}}{\phantom{0}}{\phantom{0}}{\phantom{0}}11{\phantom{0}}}
+  {
+   \color{red}\put(0.85,2){\oval(1.8,3.8)}
+   \color{red}\put(1.9,2.5){\oval(1.8,0.8)}
+   \color{red}\put(1.9,0.5){\oval(1.8,0.8)}
+  }
+  \caption{\(B\)のカルノー図}
+  \label{fig:karno1}
+\end{figure}
+
+\newpage
+\section{実験方法}
+\subsection{論理式の作成}
+デコーダ回路の回路図を作成するために真理値表を作成して論理式を立てていく。
+作成した真理値表を表\ref{tab:truth}に示す。この真理値表を元にカルノー図の作成を行う。
+\begin{table}[h]
+  \centering
+  \caption{真理値表}
+  \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+    \hline
+    $EN$ & $IN_2$ & $IN_1$ & $IN_0$ & $A$ & $B$ & $C$ & $D$ & $E$ & $F$ & $G$ \\
+    \hline
+    0 & * & * & * & 1 & 1 & 1 & 1 & 1 & 1 & 1 \\
+    1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 \\
+    1 & 0 & 0 & 1 & 1 & 0 & 1 & 1 & 1 & 1 & 0 \\
+    1 & 0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 0 \\
+    1 & 0 & 1 & 1 & 0 & 0 & 0 & 0 & 1 & 1 & 0 \\
+    1 & 1 & 0 & 0 & 1 & 0 & 0 & 1 & 1 & 0 & 0 \\
+    1 & 1 & 0 & 1 & 0 & 1 & 0 & 0 & 1 & 0 & 0 \\
+    1 & 1 & 1 & 0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\
+    1 & 1 & 1 & 1 & 0 & 0 & 0 & 1 & 1 & 0 & 1 \\
+    \hline
+  \end{tabular}
+  \label{tab:truth}
+\end{table}
+\begin{figure}
+  \centering
+  \askmapiv{\(A\)}{{\(EN\)}{\(IN_2\)}{\(IN_1\)}{\(IN_0\)}}{}{11111111{\phantom{0}}1{\phantom{0}}{\phantom{0}}1{\phantom{0}}{\phantom{0}}{\phantom{0}}}
+  {
+    
+   \color{red}\put(0.85,2){\oval(1.8,3.8)}
+   \color{red}\put(1.9,3.5){\oval(1.8,0.8)}
+   \color{red}\put(3.9,2.5){\oval(1.8,0.8)[l]}
+   \color{red}\put(-0.1,2.5){\oval(1.8,0.8)[r]}
+   
+  }
+  \caption{\(A\)のカルノー図}
+  \label{fig:karnoA}
+\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \askmapiv{\(B\)}{{\(EN\)}{\(IN_2\)}{\(IN_1\)}{\(IN_0\)}}{}{11111111{\phantom{0}}{\phantom{0}}{\phantom{0}}{\phantom{0}}{\phantom{0}}11{\phantom{0}}}
+  {
+   \color{red}\put(0.85,2){\oval(1.8,3.8)}
+   \color{red}\put(1.9,2.5){\oval(1.8,0.8)}
+   \color{red}\put(1.9,0.5){\oval(1.8,0.8)}
+  }
+  \caption{\(B\)のカルノー図}
+  \label{fig:karnoB}
+\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \askmapiv{\(C\)}{{\(EN\)}{\(IN_2\)}{\(IN_1\)}{\(IN_0\)}}{}{11111111{\phantom{0}}1{\phantom{0}}{\phantom{0}}{\phantom{0}}{\phantom{0}}{\phantom{0}}{\phantom{0}}}
+  {
+   \color{red}\put(0.85,2){\oval(1.8,3.8)}
+   \color{red}\put(3.9,2.5){\oval(1.8,0.8)[l]}
+   \color{red}\put(-0.1,2.5){\oval(1.8,0.8)[r]}
+  }
+  \caption{\(C\)のカルノー図}
+  \label{fig:karnoC}
+\end{figure}
+\begin{figure}[htbp]
+  \centering
+  \askmapiv{\(D\)}{{\(EN\)}{\(IN_2\)}{\(IN_1\)}{\(IN_0\)}}{}{11111111{\phantom{0}}1{\phantom{0}}{\phantom{0}}1{\phantom{0}}{\phantom{0}}1}{
+    \color{red}\put(0.85,2){\oval(1.8,3.8)}
+    \color{red}\put(3.9,2.5){\oval(1.8,0.8)[l]}
+    \color{red}\put(-0.1,2.5){\oval(1.8,0.8)[r]}
+    \color{red}\put(1.9,3.5){\oval(1.8,0.8)}
+    \color{red}\put(1.9,1.5){\oval(1.8,0.8)}
+  }
+  \caption{\(D\)のカルノー図}
+  \label{fig:karnoD}
+\end{figure}
+\newpage
 \section{結果}
 
 \section{考察}
