@@ -16,12 +16,10 @@
 \usepackage{multirow}
 \usepackage{bigstrut}
 \usepackage{slashbox}
+\usepackage{rotating}
+
 \begin{document}
 
-\title{デコーダ回路の設計と制作}
-\author{古城隆人}
-\date{\today}
-\maketitle
 
 \newpage
 \section{目的}
@@ -35,7 +33,7 @@
 \begin{figure}[h]
   \centering
   \includegraphics[width=10cm]{./images/breadboard.drawio.png}
-  \caption{ブレッドボードの内部構造}
+  \caption{ブレッドボード}
   \label{fig:breadboard}
 \end{figure}
 このブレッドボードは5個の部品に分かれており、2この穴が縦に空いてる場所が3個ある。それの間に10個の穴が縦に空いて真ん中に溝がある部品がある。
@@ -133,7 +131,7 @@ ICによってシンク電流、ソース電流の値が異なるのでデータ
 \begin{figure}[htbp]
   \begin{minipage}[b]{0.49\columnwidth}
   \centering
-  \askmapiv{\(B\)}{{\(EN\)}{\(IN_0\)}{\(IN_1\)}{\(IN_2\)}}{}{11111111{\phantom{0}}{\phantom{0}}{\phantom{0}}{\phantom{0}}{\phantom{0}}11{\phantom{0}}}{}
+  \askmapiv{\(B\)}{{\(EN\)}{\(IN_0\)}{\(IN_1\)}{\(IN_2\)}}{}{1111 1111 {\phantom{0}}{\phantom{0}}{\phantom{0}}{\phantom{0}} {\phantom{0}}11{\phantom{0}}}{}
   \caption{\(B\)のカルノー図}
   \label{}
   \end{minipage}
@@ -154,7 +152,7 @@ ICによってシンク電流、ソース電流の値が異なるのでデータ
 \section{実験方法}
 \subsection{論理式の作成}
 デコーダ回路の回路図を作成するために真理値表を作成して論理式を立てていく。
-作成した真理値表を表\ref{tab:truth}に示す。この真理値表を元にカルノー図の作成を行う。
+作成した真理値表を表\ref{tab:truth}に示す。この真理値表を元にカルノー図を作成し、論理式を立ててセグメントごとの回路図を作成する。
 \begin{table}[h]
   \centering
   \caption{真理値表}
@@ -176,87 +174,9 @@ ICによってシンク電流、ソース電流の値が異なるのでデータ
   \label{tab:truth}
 \end{table}
 \\
-7セグLEDの端子$A$を図\ref{fig:karnoA}に示す。これを基に論理式を作成すると、数式\eqref{eq:a-output}となる。
-これを簡単にすると、数式\eqref{eq:a-output1}となる。\\
-7セグLEDの端子$B$を図\ref{fig:karnoB}に示す。これを基に論理式を作成すると、数式\eqref{eq:b-output}となる。
-これを簡単にすると、数式\eqref{eq:b-output1}となる。\\
-7セグLEDの端子$C$を図\ref{fig:karnoC}に示す。これを基に論理式を作成すると、数式\eqref{eq:c-output}となる。\\
-7セグLEDの端子$D$を図\ref{fig:karnoD}に示す。これを基に論理式を作成すると、数式\eqref{eq:d-output}となる。
-これを簡単にすると、数式\eqref{eq:d-output1}となる。\\
-7セグLEDの端子$E$を図\ref{fig:karnoE}に示す。これを基に論理式を作成すると、数式\eqref{eq:e-output}となる。\\
-7セグLEDの端子$F$を図\ref{fig:karnoF}に示す。これを基に論理式を作成すると、数式\eqref{eq:f-output}となる。
-これを簡単にすると、数式\eqref{eq:f-output1}となる。\\
-7セグLEDの端子$G$を図\ref{fig:karnoG}に示す。これを基に論理式を作成すると、数式\eqref{eq:g-output}となる。
-\begin{align}
-  A &= \overline{EN} + \overline{IN_2} \cdot \overline{IN_1} \cdot IN_0 + IN_2 \cdot \overline{IN_1} \cdot \overline{IN_0} \label{eq:a-output}\\
-  &= \overline{EN} + \overline{IN_2} \cdot ( IN_2 \oplus IN_0)\label{eq:a-output1}\\
-  B &= \overline{EN} + IN_0 \cdot \overline{IN_1} \cdot IN_2 + \overline{IN_0} \cdot IN_1 \cdot IN_2 \label{eq:b-output}\\
-  &= \overline{EN} + IN_2 \cdot (IN_0 \oplus IN_1  ) \label{eq:b-output1}\\
-  C &= \overline{EN} + \overline{IN_2} \cdot IN_1 \cdot \overline{IN_0}\label{eq:c-output}\\
-  D &= \overline{EN} + IN_2 \cdot IN_1 \cdot IN_0 + IN_2 \cdot \overline{IN_1} \cdot \overline{IN_0} + \overline{IN_2} \cdot \overline{IN_1} \cdot IN_0\label{eq:d-output}\\
-  &= \overline{EN} + IN_1 \cdot (IN_2 \oplus IN_0) + IN_2 \cdot IN_1 \cdot IN_0\label{eq:d-output1}\\
-  E &= \overline{EN} + IN_0 + \overline{IN_1} \cdotp IN_2\label{eq:e-output}\\
-  F &= \overline{EN} + IN_0 \cdot \overline{IN_2} + IN_1 \cdot \overline{IN_2}\label{eq:f-output}\\
-  &= \overline{EN} + \overline{IN_2} \cdot (IN_0 + IN_1) \label{eq:f-output1}\\
-  G &= \overline{EN} + \overline{IN_2} \cdot \overline{IN_1}+ IN_2 \cdot IN_1 \cdot IN_0\label{eq:g-output}
-\end{align}
-% \begin{figure}[htbp]
-%   \centering
-%     \begin{tabular}{|cc|c|c|c|c|}
-%     \hline
-% 	\multicolumn{2}{|c|}{\multirow{2}{*}{\backslashbox{$IN_1$\quad $IN_0$}{$EN$ \quad $IN_2$}}} & \multirow{2}[2]{*}{0  0} & \multirow{2}[2]{*}{0  1} & \multirow{2}[2]{*}{1   1} &
-% 	\multirow{2}[2]{*}{1 0} \bigstrut[t]\\
-%           &       &       &       &  	& \bigstrut[b]\\
-%     \hline
-%     0     & 0     &1       &1       &1       &  \bigstrut\\
-%     \hline
-%     0     & 1     &1       &1       &       &1  \bigstrut\\
-%     \hline
-%     1     & 1     &1       &1       &       &  \bigstrut\\
-%     \hline
-%     1     & 0     &1       &1       &       &  \bigstrut\\
-%     \hline
-%     \end{tabular}%
-%   \caption{Aのカルノー図}
-%   \label{fig:KarnaughMapFormat}%
-% \end{figure}%
-% \begin{figure}[htbp]
-%   \centering
-%     \begin{tabular}{|cc|c|c|c|c|}
-%     \hline
-% 	\multicolumn{2}{|c|}{\multirow{2}{*}{\backslashbox{$IN_1$\quad $IN_0$}{$EN$ \quad $IN_2$}}} & \multirow{2}[2]{*}{0  0} & \multirow{2}[2]{*}{0  1} & \multirow{2}[2]{*}{1   1} &
-% 	\multirow{2}[2]{*}{1 0} \bigstrut[t]\\
-%           &       &       &       &  	& \bigstrut[b]\\
-%     \hline
-%     0     & 0     &1       &1       &       &  \bigstrut\\
-%     \hline
-%     0     & 1     &1       &1       &1       &  \bigstrut\\
-%     \hline
-%     1     & 1     &1       &1       &       &  \bigstrut\\
-%     \hline
-%     1     & 0     &1       &1       &1       &  \bigstrut\\
-%     \hline
-%     \end{tabular}%
-%   \caption{Bのカルノー図}
-%   \label{fig:KarnaughMapFormatb}%
-% \end{figure}%
-
-\begin{figure}[h]
-  \begin{minipage}[b]{0.49\columnwidth}
-  \centering
-  \askmapiv{\(A\)}{{\(EN\)}{\(IN_2\)}{\(IN_1\)}{\(IN_0\)}}{}{11111111{\phantom{0}}1{\phantom{0}}{\phantom{0}}1{\phantom{0}}{\phantom{0}}{\phantom{0}}}
-  {
-    
-   \color{black}\put(0.85,2){\oval(1.8,3.8)}
-   \color{black}\put(1.9,3.5){\oval(1.8,0.8)}
-   \color{black}\put(3.9,2.5){\oval(1.8,0.8)[l]}
-   \color{black}\put(-0.1,2.5){\oval(1.8,0.8)[r]}
-   
-  }
-  \caption{\(A\)のカルノー図}
-  \label{fig:karnoA}
-  \end{minipage}
-  \begin{minipage}[b]{0.49\columnwidth}
+\subsection{セグメントB}
+セグメント$B$のカルノー図を図 \ref{fig:karnoB}に示す。このカルノー図を基に作成した式を数式\eqref{eq:b-output}に示す。これを基に作成したセグメントBの回路図を図\ref{fig:segB}に示す。
+\begin{figure}[htbp]
   \centering
   \askmapiv{\(B\)}{{\(EN\)}{\(IN_2\)}{\(IN_1\)}{\(IN_0\)}}{}{11111111{\phantom{0}}{\phantom{0}}{\phantom{0}}{\phantom{0}}{\phantom{0}}11{\phantom{0}}}
   {
@@ -266,11 +186,24 @@ ICによってシンク電流、ソース電流の値が異なるのでデータ
   }
   \caption{\(B\)のカルノー図}
   \label{fig:karnoB}
-  \end{minipage}
 \end{figure}
+
+\begin{align}
+  B &= \overline{EN} + IN_0 \cdot \overline{IN_1} \cdot IN_2 + \overline{IN_0} \cdot IN_1 \cdot IN_2 \label{eq:b-output}\\
+  &= \overline{EN} + IN_2 \cdot (IN_0 \oplus IN_1  ) \label{eq:b-output1}
+\end{align}
+
 \begin{figure}[htbp]
   \centering
-  \begin{minipage}[b]{0.49\columnwidth}
+  \includegraphics{./images/B.png}
+  \label{fig:segB}
+  \caption{セグメントBの回路図}
+\end{figure}
+\newpage
+\subsection{セグメントC}
+セグメント$C$のカルノー図を図 \ref{fig:karnoC}に示す。このカルノー図を基に作成した式を数式\eqref{eq:c-output}に示す。これを基に作成したセグメントCの回路図を図\ref{fig:segC}に示す。
+\begin{figure}[htbp]
+  \centering
   \askmapiv{\(C\)}{{\(EN\)}{\(IN_2\)}{\(IN_1\)}{\(IN_0\)}}{}{11111111{\phantom{0}}1{\phantom{0}}{\phantom{0}}{\phantom{0}}{\phantom{0}}{\phantom{0}}{\phantom{0}}}
   {
    \color{black}\put(0.85,2){\oval(1.8,3.8)}
@@ -279,32 +212,69 @@ ICによってシンク電流、ソース電流の値が異なるのでデータ
   }
   \caption{\(C\)のカルノー図}
   \label{fig:karnoC}
-  \end{minipage}
-  \begin{minipage}[b]{0.49\columnwidth}
-  \centering
-  \askmapiv{\(D\)}{{\(EN\)}{\(IN_2\)}{\(IN_1\)}{\(IN_0\)}}{}{11111111{\phantom{0}}1{\phantom{0}}{\phantom{0}}1{\phantom{0}}{\phantom{0}}1}{
-    \color{black}\put(0.85,2){\oval(1.8,3.8)}
-    \color{black}\put(3.9,2.5){\oval(1.8,0.8)[l]}
-    \color{black}\put(-0.1,2.5){\oval(1.8,0.8)[r]}
-    \color{black}\put(1.9,3.5){\oval(1.8,0.8)}
-    \color{black}\put(1.9,1.5){\oval(1.8,0.8)}
-  }
-  \caption{\(D\)のカルノー図}
-  \label{fig:karnoD}
-  \end{minipage}
 \end{figure}
+
+\begin{align}
+  C &= \overline{EN} + \overline{IN_2} \cdot IN_1 \cdot \overline{IN_0}\label{eq:c-output}
+\end{align}
+
 \begin{figure}[htbp]
   \centering
-  \begin{minipage}[b]{0.49\columnwidth}
-  \askmapiv{\(E\)}{{\(EN\)}{\(IN_2\)}{\(IN_1\)}{\(IN_0\)}}{}{11111111{\phantom{0}}1{\phantom{0}}111{\phantom{0}}1}{
-    \color{black}\put(0.85,2){\oval(1.8,3.8)}
-    \color{black}\put(1.9,2.0){\oval(3.8,1.8)}
-    \color{black}\put(1.9,3.0){\oval(1.8,1.8)}
-  }
-  \caption{\(E\)のカルノー図}
-  \label{fig:karnoE}
-  \end{minipage}
-  \begin{minipage}[b]{0.49\columnwidth}
+  \includegraphics{./images/C.png}
+  \label{fig:segC}
+  \caption{セグメントCの回路図}
+\end{figure}
+\newpage
+\subsection{セグメントD}
+セグメント$D$のカルノー図を図 \ref{fig:karnoD}に示す。このカルノー図を基に作成した式を数式\eqref{eq:d-output}に示す。これを基に作成したセグメントDの回路図を図\ref{fig:segD}に示す。
+\begin{figure}[htbp]
+  \centering
+  \askmapiv{\(D\)}{{\(EN\)}{\(IN_2\)}{\(IN_1\)}{\(IN_0\)}}{}{11111111{\phantom{0}}1{\phantom{0}}{\phantom{0}}1{\phantom{0}}{\phantom{0}}1}{
+  \color{black}\put(0.85,2){\oval(1.8,3.8)}
+  \color{black}\put(3.9,2.5){\oval(1.8,0.8)[l]}
+  \color{black}\put(-0.1,2.5){\oval(1.8,0.8)[r]}
+  \color{black}\put(1.9,3.5){\oval(1.8,0.8)}
+  \color{black}\put(1.9,1.5){\oval(1.8,0.8)}
+}
+\caption{\(D\)のカルノー図}
+\label{fig:karnoD}
+\end{figure}
+\begin{align}
+  D &= \overline{EN} + IN_2 \cdot IN_1 \cdot IN_0 + IN_2 \cdot \overline{IN_1} \cdot \overline{IN_0} + \overline{IN_2} \cdot \overline{IN_1} \cdot IN_0\label{eq:d-output}\\
+  &= \overline{EN} + IN_1 \cdot (IN_2 \oplus IN_0) + IN_2 \cdot IN_1 \cdot IN_0\label{eq:d-output1}
+\end{align}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics{./images/D.png}
+  \label{fig:segD}
+  \caption{セグメントDの回路図}
+\end{figure}
+\newpage
+\subsection{セグメントE}
+セグメント$E$のカルノー図を図 \ref{fig:karnoE}に示す。このカルノー図を基に作成した式を数式\eqref{eq:e-output}に示す。これを基に作成したセグメントEの回路図を図\ref{fig:segE}に示す。
+\begin{figure}[htbp]
+  \centering
+    \askmapiv{\(E\)}{{\(EN\)}{\(IN_2\)}{\(IN_1\)}{\(IN_0\)}}{}{11111111{\phantom{0}}1{\phantom{0}}111{\phantom{0}}1}{
+      \color{black}\put(0.85,2){\oval(1.8,3.8)}
+      \color{black}\put(1.9,2.0){\oval(3.8,1.8)}
+      \color{black}\put(1.9,3.0){\oval(1.8,1.8)}
+    }
+    \caption{\(E\)のカルノー図}
+    \label{fig:karnoE}
+\end{figure}
+\begin{align}
+  E &= \overline{EN} + IN_0 + \overline{IN_1} \cdotp IN_2\label{eq:e-output}
+\end{align}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics{./images/E.png}
+  \label{fig:segE}
+  \caption{セグメントEの回路図}
+\end{figure}
+\newpage
+\subsection{セグメントF}
+セグメント$F$のカルノー図を図 \ref{fig:karnoF}に示す。このカルノー図を基に作成した式を数式\eqref{eq:f-output}に示す。これを基に作成したセグメントFの回路図を図\ref{fig:segF}に示す。
+\begin{figure}[htbp]
   \centering
   \askmapiv{\(F\)}{{\(EN\)}{\(IN_2\)}{\(IN_1\)}{\(IN_0\)}}{}{11111111{\phantom{0}}1{\phantom{0}}{\phantom{0}}1{\phantom{0}}1}{
     \color{black}\put(0.85,2){\oval(1.8,3.8)}
@@ -315,8 +285,20 @@ ICによってシンク電流、ソース電流の値が異なるのでデータ
   }
   \caption{\(F\)のカルノー図}
   \label{fig:karnoF}
-  \end{minipage}
 \end{figure}
+\begin{align}
+  F &= \overline{EN} + IN_0 \cdot \overline{IN_2} + IN_1 \cdot \overline{IN_2}\label{eq:f-output}\\
+  &= \overline{EN} + \overline{IN_2} \cdot (IN_0 + IN_1) \label{eq:f-output1}
+\end{align}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics{./images/F.png}
+  \label{fig:segF}
+  \caption{セグメントFの回路図}
+\end{figure}
+\newpage
+\subsection{セグメントG}
+セグメント$G$のカルノー図を図 \ref{fig:karnoG}に示す。このカルノー図を基に作成した式を数式\eqref{eq:g-output}に示す。これを基に作成したセグメントGの回路図を図\ref{fig:segG}に示す。
 \begin{figure}[htbp]
   \centering
   \askmapiv{\(G\)}{{\(EN\)}{\(IN_2\)}{\(IN_1\)}{\(IN_0\)}}{}{111111111{\phantom{0}}{\phantom{0}}{\phantom{0}}{\phantom{0}}{\phantom{0}}{\phantom{0}}1}{
@@ -328,20 +310,20 @@ ICによってシンク電流、ソース電流の値が異なるのでデータ
   \caption{\(G\)のカルノー図}
   \label{fig:karnoG}
 \end{figure}
-\newpage
-\newpage
-\subsection{回路図の作成}
-作成した論理式を基に回路図を作成する。端子ごとに論理式を立てたが、共通して使えるところがあるので、それを使用して回路を作成する。
-作成した回路図を図\ref{fig:circit}に示す。
-\begin{figure}[h]
+\begin{align}
+  G &= \overline{EN} + \overline{IN_2} \cdot \overline{IN_1}+ IN_2 \cdot IN_1 \cdot IN_0\label{eq:g-output}
+\end{align}
+\begin{figure}[htbp]
   \centering
-  \includegraphics[width=10cm]{./images/circit.png}
-  \caption{回路図}
-  \label{fig:circit}
+  \includegraphics{./images/G.png}
+  \label{fig:segG}
+  \caption{セグメントGの回路図}
 \end{figure}
+
+\newpage
 \subsection{ブレッドボードへの配線}
 作成した回路図を基にブレッドボードへの配線を行う。使用する部品を表\ref{tab:parts}に示す。
-\begin{figure}
+\begin{figure}[htbp]
   \centering
   \begin{tabular}{|c|c|c|}
     \hline
@@ -362,12 +344,95 @@ ICによってシンク電流、ソース電流の値が異なるのでデータ
   \caption{使用部品}
   \label{tab:parts}
 \end{figure}
-
+\subsection{動作確認}
+デコード回路が正しく動作しているかの確認に動作確認基盤を用いる。
+これはピンヘッダを用いてブレッドボードに接続する部品で、2進数の出力を行うことが出来る。
+この基盤を用いて、2進数の入力を行い、7セグLEDが正しく表示されるか確認を行う。
+\newpage
 \section{結果}
-
-\section{考察}
-
-\section{付録}
+作成した回路をブレッドボードに配線を行い、LEDが正常に点灯することを確認した。入力と出力の関係を表\ref{tab:input-output}に示す。
+\begin{table}[h]
+  \centering
+  \caption{入力と出力の関係}
+  \begin{tabular}{|c|c|c|c|c|}
+    \hline 
+    \rm $(0)_{10}$ & \rm $(1)_{10}$ & \rm $(2)_{10}$ & \rm $(3)_{10}$ & \rm $(4)_{10}$ \\
+    \hline
+    \begin{minipage}{0.15\columnwidth}
+      \centering
+      \scalebox{0.15}{\includegraphics{./images/7seg0.drawio.png}}
+    \end{minipage} &
+    \begin{minipage}{0.15\columnwidth}
+      \centering
+      \scalebox{0.15}{\includegraphics{./images/7seg1.drawio.png}}
+    \end{minipage} &
+    \begin{minipage}{0.15\columnwidth}
+      \centering
+      \scalebox{0.15}{\includegraphics{./images/7seg2.drawio.png}}
+    \end{minipage} &
+    \begin{minipage}{0.15\columnwidth}
+      \centering
+      \scalebox{0.15}{\includegraphics{./images/7seg3.drawio.png}}
+    \end{minipage} &
+    \begin{minipage}{0.15\columnwidth}
+      \centering
+      \scalebox{0.15}{\includegraphics{./images/7seg4.drawio.png}}
+    \end{minipage} \\
+    \hline
+    \rm $(5)_{10}$ & \rm $(6)_{10}$ & \rm $(7)_{10}$ & \rm $EN_{on}$ & \rm $EN_{off}$ \\
+    \hline
+    \begin{minipage}{0.15\columnwidth}
+      \centering
+      \scalebox{0.15}{\includegraphics{./images/7seg5.drawio.png}}
+    \end{minipage} &
+    \begin{minipage}{0.15\columnwidth}
+      \centering
+      \scalebox{0.15}{\includegraphics{./images/7seg6.drawio.png}}
+    \end{minipage} &
+    \begin{minipage}{0.15\columnwidth}
+      \centering
+      \scalebox{0.15}{\includegraphics{./images/7seg7.drawio.png}}
+    \end{minipage} &
+    \begin{minipage}{0.15\columnwidth}
+      \centering
+      \scalebox{0.15}{\includegraphics{./images/7segen.drawio.png}}
+    \end{minipage} &
+    \begin{minipage}{0.15\columnwidth}
+      \centering
+      \scalebox{0.15}{\includegraphics{./images/7seg.drawio.png}}
+    \end{minipage} \\
+    \hline
+  \end{tabular} 
+  \label{tab:input-output}
+\end{table}
+\section{報告事項}
+  \subsection{$VCC = 5[V]$の電源を使って$I_f = 8[mA]$、$V_f = 1.98[V]$のLEDを適切に光らせるには、抵抗の値をいくらにすればよいか。}
+  $ R = \frac{VCC - V_f}{I_f} = \frac{5 - 1.98}{0.008} = 377.5[\Omega]$より、$380[\Omega]$の抵抗を使用する。
+  \subsection{バイポーラトランジスタとCOMSの特徴を調べて報告してください。}
+  バイポーラトランジスタにはPNP型とNPN型があり、NPN型はPNP型と逆の特性を持っている。
+  NPN型ではベースからエミッタにかけて電流が流れるとコレクタからエミッタにかけて電流が流れる。
+  そして、ベースからエミッタにかけて流れる電流はコレクタからエミッタにかける電流よりも小さいため、電流の増幅を行うことが出来る。
+  CMOSは、MOSFETを用いた回路である。MOSFETとはバイポーラトランジスタと違いゲートに電圧を印加することによりチャネルを形成し、電流を流すことが出来る。
+  そのため一度駆動してしまえば電流の消費が少ないため駆動しているときの消費電力が少ない。
+  \subsection{ファンイン、ファンアウトについて調べて報告してさい}
+  ファンイン、ファンアウトとは論理素子の入力端子、出力端子の数のことを言う。\\
+  バイポーラトランジスタで構成されているICの場合、シンク電流やソース電流によって同じ配線で次に駆動できるICの数が決まる。
+  例えば $I_{ol} = 0.4[mA]$、 $ I_{il} = 0.1[mA]$の場合、$I_{ol} = I_{il} \times n$より、$n = 4$となる。この同時に接続できる数がファンアウトである。
+  ファンインとは、ICの入力端子に接続できる数のことである。
+  \subsection{表2.2にある真理値表を完成させてください}
+  表\ref{tab:truth}に真理値表を示す。
+  \subsection{7セグメントLEDおよび抵抗を含めた、すべてのセグメントをまとめた回路図を描いてください}
+  7セグメントLEDおよび抵抗を含めた、すべてのセグメントをまとめた回路図を図\ref{fig:circit}に示す。
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics[angle = 90,width = 0.95\columnwidth]{./images/circit.png}
+    \caption{7セグメントLEDの回路図}
+    \label{fig:circit}
+  \end{figure}
+  \newpage
+  \section{考察}
+今回の実験では、7セグメントLEDを制御するための回路を作成することが出来た。
+論理回路を組むときにカルノー図を使用すると簡単化を行えて、回路をより簡単なものにすることが出来た。
 
 
 \end{document}
