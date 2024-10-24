@@ -323,8 +323,9 @@ ICによってシンク電流、ソース電流の値が異なるのでデータ
 \newpage
 \subsection{ブレッドボードへの配線}
 作成した回路図を基にブレッドボードへの配線を行う。使用する部品を表\ref{tab:parts}に示す。
-\begin{figure}[htbp]
+\begin{table}[htbp]
   \centering
+  \caption{使用部品}
   \begin{tabular}{|c|c|c|}
     \hline
     部品名 & 数量 & 用途 \\
@@ -341,9 +342,8 @@ ICによってシンク電流、ソース電流の値が異なるのでデータ
     抵抗(380 $\Omega$) & 7 & 7セグLEDの入力電流制御 \\
     \hline
   \end{tabular}
-  \caption{使用部品}
   \label{tab:parts}
-\end{figure}
+\end{table}
 \subsection{動作確認}
 デコード回路が正しく動作しているかの確認に動作確認基盤を用いる。
 これはピンヘッダを用いてブレッドボードに接続する部品で、2進数の出力を行うことが出来る。
@@ -407,7 +407,7 @@ ICによってシンク電流、ソース電流の値が異なるのでデータ
 \end{table}
 \section{報告事項}
   \subsection{$VCC = 5[V]$の電源を使って$I_f = 8[mA]$、$V_f = 1.98[V]$のLEDを適切に光らせるには、抵抗の値をいくらにすればよいか。}
-  $ R = \frac{VCC - V_f}{I_f} = \frac{5 - 1.98}{0.008} = 377.5[\Omega]$より、$380[\Omega]$の抵抗を使用する。
+  $ R = \frac{VCC - V_f}{I_f} = \frac{5 - 1.98}{0.008} = 377.5[\Omega]$より、$380[\Omega]$にすればよい。
   \subsection{バイポーラトランジスタとCOMSの特徴を調べて報告してください。}
   バイポーラトランジスタにはPNP型とNPN型があり、NPN型はPNP型と逆の特性を持っている。
   NPN型ではベースからエミッタにかけて電流が流れるとコレクタからエミッタにかけて電流が流れる。
