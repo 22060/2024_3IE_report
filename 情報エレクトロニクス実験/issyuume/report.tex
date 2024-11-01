@@ -18,6 +18,15 @@
 \usepackage{slashbox}
 \usepackage{rotating}
 
+
+\newcommand{\fig}[4]{
+  \begin{figure}[htbp]
+    \centering
+    \includegraphics{./image/#1}
+    \caption{#2}
+    \label{fig:#3}
+  \end{figure}
+}
 \begin{document}
 
 
