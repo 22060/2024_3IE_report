@@ -2,3 +2,6 @@ out
 build
 .vscode
 output
+.pdf
+bin
+lib
