@@ -1,0 +1,447 @@
+\documentclass[dvipdfmx]{jsarticle}
+\usepackage[final]{graphicx}
+% 数式
+\usepackage{amsmath,amsfonts}
+\usepackage{bm}
+% 画像
+% \lstset{noxoutput=true}
+
+\include{setting.txt}
+
+
+\begin{document}
+
+\title{スタックの実装と応用}
+\author{22060 211 古城隆人}
+\date{\today}
+\maketitle
+
+% \tableofcontents
+
+\newpage
+
+
+\section{目的}
+ススタックを用いたデータ構造を理解し、スタックを用いたプログラムを作成することで、スタックの基本的な操作を理解する。また、スタックを用いたハノイの塔のプログラムを作成し、理解を深める。
+\section{原理}
+\subsection{スタック}
+スタックとはデータ構造の一種であり、データの追加や削除が限定的に行うことが出来る構造である。
+限定的にすることによりデータの数が増えてもデータの挿入や削除にかかる時間が一定になるという利点がある。
+スタックはデータが出入りする順番により、LIFO(Last In First Out)、FILO(First in Last out)と呼ばれる。
+スタックには以下の操作がある。
+\begin{itemize}
+  \item push: スタックにデータを追加する
+  \item pop: スタックからデータを取り出す
+\end{itemize}
+pushを行うと、スタックの一番上にデータが追加される。
+popを行うと、スタックの一番上のデータが取り出され、取り出したデータを削除する。
+\subsection{ハノイの塔}\label{sec:mysection}
+ハノイの塔は、3本の杭とその上に積まれた円盤からなるパズルである。移動のルールは以下の通りである。
+\begin{itemize}
+  \item 1回の移動で1枚の円盤しか動かせない
+  \item 小さい円盤の上に大きい円盤を乗せることはできない
+  \item すべての円盤を移動させるとき、最初の杭から最後の杭に移動させる
+\end{itemize}
+杭をstackとみなすことが出来るため3個のstackを用いて実装を行う。
+\section{実験環境}
+実験環境を表\ref{tab:environment}に示す。
+\begin{table}[ht]
+  \centering
+  \begin{tabular}{|c|c|}
+    \hline
+    \textbf{項目} & \textbf{値}              \\
+    \hline
+    OS          & windows10上のwsl2(Ubuntu) \\
+    \hline
+    CPU         & Intel Core i7           \\
+    \hline
+    メモリ         & 8GB                     \\
+    \hline
+    コンパイラ       & gcc 11.4.0              \\
+    \hline
+  \end{tabular}
+  \caption{実験環境}
+  \label{tab:environment}
+\end{table}
+\newpage
+\section{プログラムの設計と説明}
+\subsection{スタックの実装}
+スタックの実装をするために最初にソースコード\ref{lst:stackh}に示す構造体を作成する。
+また、次に作成する関数の引数としてこの構造体のポインタを渡すことで、スタックのデータを操作することが出来る。
+作成する関数は表\ref{tab:functions}の通りである。
+\begin{table}[ht]
+  \centering
+  \begin{tabular}{|c|c|}
+    \hline
+    \textbf{関数名} & \textbf{説明}    \\
+    \hline
+    init         & スタックの構造体を初期化する \\
+    \hline
+    pop          & スタックからデータを取り出す \\
+    \hline
+    push         & スタックに値を代入する    \\
+    \hline
+    printStack   & スタックの中身を表示する   \\
+    \hline
+    pushTest     & push関数のテストを行う  \\
+    \hline
+    popTest      & pop関数のテストを行う   \\
+    \hline
+  \end{tabular}
+  \caption{作成する関数のリスト}
+  \label{tab:functions}
+\end{table}
+
+\subsubsection{構造体}
+この構造体はスタックのデータを格納するためのものであり、データの格納数をHEIGHTで定義している。
+\begin{lstlisting}[caption={stack.h}, label={lst:stackh}]
+#define HEIGHT 5
+struct Stack
+{
+  int data[HEIGHT];
+  int volume;
+};
+\end{lstlisting}
+\subsubsection{作成した関数}
+% \begin{itemize}
+%   \item init: スタックの構造体を初期化する、関数の仕様は 表\ref{tab:init_func}に示す。
+%   \item push: スタックに値を代入する、関数の仕様は 表\ref{tab:push_func}に示す。
+%   \item pop: スタックからデータを取り出す、関数の仕様は 表\ref{tab:pop_func}に示す。
+%   \item printStack: スタックの中身を表示する、関数の仕様は 表\ref{tab:printstack_func}に示す。
+%   \item pushTest: push関数のテストを行う、関数の仕様は 表\ref{tab:pushtest_func}に示す。
+%   \item popTest: pop関数のテストを行う、関数の仕様は 表\ref{tab:poptest_func}に示す。
+% \end{itemize}
+% \newpage
+
+\textbf{・init関数}
+\begin{table}[ht]
+  \centering
+  \caption{init関数}
+  \begin{tabular}{|p{5cm}|p{10cm}|}
+    \hline
+    機能  & スタック構造体の中にある配列を全部0で初期化する。                  \\
+    \hline
+    引数  & struct Stack *stack : 初期化するスタックのポインタ       \\
+    \hline
+    戻り値 & なし                                         \\
+    \hline
+  \end{tabular}
+  \label{tab:init_func}
+\end{table}
+\newpage
+\begin{lstlisting}[caption={init関数}, label={lst:init_func}]
+  void init(struct Stack *stack)
+  {
+      // スタックのすべての要素の値を 0 にする
+      // スタックに格納されているデータ数を 0 にする
+      for (int i = 0; i < HEIGHT; i++)
+      {
+          stack->data[i] = 0;
+      }
+      stack->volume = 0;
+  }
+\end{lstlisting}
+この関数では、スタックの中身を初期化するために、スタックの中身を0で初期化し、スタックの中身の個数を0にする。
+\\
+\textbf{・push関数}
+\begin{table}[ht]
+  \centering
+  \caption{push関数}
+  \begin{tabular}{|p{5cm}|p{10cm}|}
+    \hline
+    機能  & スタックにデータを追加させる。                         \\
+    \hline
+    引数  & struct Stack *stack : pushしたいstackのポインタ \\
+    \hline
+    戻り値 & 処理が正常に終了したら(int)0、エラーが出たら(int)-1                  \\
+    \hline
+  \end{tabular}
+  \label{tab:push_func}
+\end{table}
+\begin{lstlisting}[caption={push関数}, label={lst:push_func}]
+  int push(struct Stack *stack, int number)
+  {
+      // データを最上位に積み込む
+      // データの個数を増やす
+      if (stack->volume >= HEIGHT)
+      {
+          return -1;
+      }
+      stack->data[stack->volume] = number;
+      stack->volume++;
+      return 0;
+  }
+\end{lstlisting}
+この関数では、スタックにデータを追加するために、スタックの中身が満杯でないかを確認し、満杯でない場合はデータを追加し、スタックの中身の個数を増やす。
+
+\newpage
+\textbf{・pop関数}
+\begin{table}[ht]
+  \centering
+  \caption{pop関数}
+  \begin{tabular}{|p{5cm}|p{10cm}|}
+    \hline
+    機能  & スタックのデータを一番上から取り出して、そのデータを削除する。        \\
+    \hline
+    引数  & struct Stack *stack : popしたいstackのポインタ \\
+    \hline
+    戻り値 & 削除したデータの値(int)を返すが、エラーが出たときは(int)-1を返す \\
+    \hline
+  \end{tabular}
+  \label{tab:pop_func}
+\end{table}
+\begin{lstlisting}[caption={pop関数}, label={lst:pop_func}]
+  int pop(struct Stack *stack)
+  {
+      // 格納されているデータ個数のカウントを減らす
+      // 取り出すデータを取り出す
+      // 取り出した場所を初期化する
+      if (stack->volume == 0)
+      {
+          return -1;
+      }
+      stack->volume--;
+      int result = stack->data[stack->volume];
+      stack->data[stack->volume] = 0;
+      return result;
+  }
+\end{lstlisting}
+この関数では、スタックの中身があるかを確認し、中身がある場合はスタックの中身の個数を減らし、スタックの一番上のデータを取り出し、その場所を初期化する。
+\\\\
+\textbf{・printStack関数}
+\begin{table}[ht]
+  \centering
+  \caption{printStack関数}
+  \begin{tabular}{|p{5cm}|p{10cm}|}
+    \hline
+    機能  & スタックの中身を表示する。                         \\
+    \hline
+    引数  & struct Stack *stack : 表示したいstackのポインタ \\
+    \hline
+    戻り値 & なし                                    \\
+    \hline
+  \end{tabular}
+  \label{tab:printstack_func}
+\end{table}
+\begin{lstlisting}[caption={printStack関数}, label={lst:printstack_func}]
+  void printStack(struct Stack stack)
+  {
+      // スタックに格納されている値をスタックされている順番に 1 行に表示
+      for (int i = stack.volume - 1; i >= 0; i--)
+      {
+          printf("%d ", stack.data[i]);
+      }
+      printf("\n");
+  }
+\end{lstlisting}
+この関数では、スタックの中身を表示するために、スタックの中身をスタックされている順番に表示する。\\
+\textbf{・pushTest関数}
+\begin{table}[ht]
+  \centering
+  \caption{pushTest関数}
+  \begin{tabular}{|p{5cm}|p{10cm}|}
+    \hline
+    機能  & push関数のテストを行う。成功したらpush関数の戻り値が0になるため、   \\ &if文を使い結果を出力する           \\
+    \hline
+    引数  & struct Stack *stack : pushしたいstackのポインタ \\
+        & num: pushする値                            \\
+    \hline
+    戻り値 & なし                                      \\
+    \hline
+  \end{tabular}
+  \label{tab:pushtest_func}
+\end{table}
+\begin{lstlisting}[caption={pushTest関数}, label={lst:pushtest_func}]
+  void pushTest( struct Stack *stack,int num)
+  {
+      // push関数のテスト
+      // push関数の戻り値が0ならSUCCESS、-1ならFAILUREを表示
+      printf("push (%d) ",num);
+      if(push(stack, num) == 0){
+          printf("SUCCESS\n");
+      }else{
+          printf("FAILURE\n");
+      }
+      // スタックの中身を表示
+      printf("data : ");
+      printStack(*stack);
+  }
+\end{lstlisting}
+この関数では、push関数のテストを行うために、push関数の戻り値が0かどうかを確認し、結果を出力する。
+\\
+\textbf{・popTest関数}
+\begin{table}[ht]
+  \centering
+  \caption{popTest関数}
+  \begin{tabular}{|p{5cm}|p{10cm}|}
+    \hline
+    機能  & pop関数のテストを行う。popに失敗したらpop関数の戻り値が-1になるため、 \\ & if文を使い結果を出力する            \\
+    \hline
+    引数  & struct Stack *stack : popしたいstackのポインタ   \\
+    \hline
+    戻り値 & なし                                       \\
+    \hline
+  \end{tabular}
+  \label{tab:poptest_func}
+\end{table}
+\newpage
+\begin{lstlisting}
+  void popTest( struct Stack *stack)
+  {
+      printf("pop ");
+      int result = pop(stack);
+      printf("(%d) ",result);
+      if(result == -1){
+          printf("FAILURE\n");
+      }else{
+          printf("SUCCESS\n");
+      }
+      printf("data : ");
+      printStack(*stack);
+  }
+\end{lstlisting}
+\newpage
+\clearpage
+\subsection{ハノイの塔}
+\ref{sec:mysection}でも示した通り、ハノイの塔は3本の杭とその上に積まれた円盤からなるパズルである。
+そのため、3個のstackを用いて実装を行う。
+ハノイの塔のために作成する関数は表\ref{tab:hanoi_functions}の通りである。
+\begin{table}[ht]
+  \centering
+  \begin{tabular}{|c|c|}
+    \hline
+    \textbf{関数名} & \textbf{説明}   \\
+    \hline
+    enableStack  & 移動可能かどうかを判別する \\
+    \hline
+    checkFinish  & 終了したかどうかを判別する \\
+    \hline
+  \end{tabular}
+  \caption{作成する関数のリスト}
+  \label{tab:hanoi_functions}
+\end{table}
+\subsubsection{作成する関数}
+\begin{itemize}
+  \item enableStack: 移動可能かどうかを判別する、関数の仕様は 表\ref{tab:enablestack_func}に示す。
+  \item checkFinish: 終了したかどうかを判別する、関数の仕様は 表\ref{tab:checkfinish_func}に示す。
+  \item top: スタックの一番上のデータを取得する、関数の仕様は 表\ref{tab:top_func}に示す。
+\end{itemize}
+\textbf{・enableStack関数}
+\begin{table}[ht]
+  \centering
+  \caption{enableStack関数}
+  \begin{tabular}{|p{5cm}|p{10cm}|}
+    \hline
+    機能  & 移動可能かどうかを判別する。移動可能なら1を返し、不可能ならを返す。   \\
+    \hline
+    引数  & struct Stack stack1 : 移動元のstackのポインタ \\
+        & struct Stack stack2 : 移動先のstackのポインタ \\
+    \hline
+    戻り値 & 移動可能なら1、不可能なら0を返す。                   \\
+    \hline
+  \end{tabular}
+  \label{tab:enablestack_func}
+\end{table}
+\begin{lstlisting}[caption={enableStack関数}, label={lst:enablestack_func}]
+  int enableStack(struct Stack fromTower, struct Stack toTower)
+  {
+      /* 移動可能である条件に応じて返り値を返す */
+      if (fromTower.volume == 0)
+      {
+          return 0;
+      }
+      else if (toTower.volume == 0)
+      {
+          return 1;
+      }
+      else if (top(fromTower) < top(toTower))
+      {
+          return 1;
+      }
+      else
+      {
+          return 0;
+      }
+  }
+\end{lstlisting}
+この関数では、移動可能かどうかを判別するために、移動元のスタックの中身がない場合は移動不可能、移動先のスタックの中身がない場合は移動可能、移動元のスタックの一番上のデータが移動先のスタックの一番上のデータより小さい場合は移動可能、それ以外の場合は移動不可能とする。
+\\
+\textbf{・checkFinish関数}
+\begin{table}[ht]
+  \centering
+  \caption{checkFinish関数}
+  \begin{tabular}{|p{5cm}|p{10cm}|}
+    \hline
+    機能  & 終了したかどうかを判別する。終了したら1を返し、終了していないなら0を返す。  \\
+    \hline
+    引数  & struct Stack *stack1 : 終了判定するstackのポインタ \\
+        & struct Stack *stack2 : 終了判定するstackのポインタ \\
+    \hline
+    戻り値 & 終了したら1、終了していないなら0を返す。                   \\
+    \hline
+  \end{tabular}
+  \label{tab:checkfinish_func}
+\end{table}
+\begin{lstlisting}[caption={checkFinish関数}, label={lst:checkfinish_func}]
+  int checkFinish(struct Stack tower, int blocks)
+  {
+      // ブロックが初期状態と同じ状態かチェックする
+      for (int i = 0; i < blocks; i++)
+      {
+          if (tower.data[i] != blocks - i)
+          {
+              return 0;
+          }
+      }
+      return 1;
+  }
+\end{lstlisting}
+この関数では、終了したかどうかを判別するために、スタックの中身が初期状態と同じかを確認し、同じ場合は終了、異なる場合は終了していないとする。
+\\
+\textbf{・top関数}
+\begin{table}[ht]
+  \centering
+  \caption{top関数}
+  \begin{tabular}{|p{5cm}|p{10cm}|}
+    \hline
+    機能  & スタックの一番上のデータを取得する。                         \\
+    \hline
+    引数  & struct Stack stack : 取得したいstackのポインタ \\
+    \hline
+    戻り値 & スタックの一番上のデータ(int)を返す。                   \\
+    \hline
+  \end{tabular}
+  \label{tab:top_func}
+\end{table}
+\begin{lstlisting}[caption={tower.c}, label={lst:towerc}]
+  int top(struct Stack tower)
+  {
+      return tower.data[tower.volume - 1];
+  }
+\end{lstlisting}
+この関数では、スタックの一番上のデータを取得するために、スタックの一番上のデータを返す。
+% \clearpage
+\section{実行結果}
+\subsection{スタックの実装}
+main関数を実行した結果を以下に示す。
+\lstinputlisting[style=customtxt]{./txt/stack.txt}
+データがあふれてるときやデータがないときにエラーが出力されていることがわかる。
+\subsection{ハノイの塔}
+ハノイの塔のプログラムを実行した結果を以下に示す。
+\lstinputlisting[style=customtxt]{./txt/tower.txt}
+また、入力エラーをわざと起こしたときの実行結果を以下に示す。\\
+
+\lstinputlisting[style=customtxt]{./txt/tower_error.txt}
+\section{考察}
+\subsection{スタックの実装}
+スタックの実験結果より、満杯のスタックにさらにpushしようとしたときにエラー表示となり中身を壊すことなく処理を終えることが出来ている。また、中身がないときにpopしようとしてもエラーが出力されている。
+このことからスタックの基本的な動作が期待通りに行われていることがわかる。
+\subsection{ハノイの塔}
+ハノイの塔の実験結果より、入力エラーも処理されて、ゲームとして完璧に動作している。そのため、スタックを用いたハノイの塔の実装が成功していることがわかる。
+
+\section{付録:今回使用したプログラム}
+\lstinputlisting[caption={stack.c}, label={lst:stack.c}]{stack.c}
+\lstinputlisting[caption={tower.c}, label={lst:tower.c}]{tower.c}
+
+
+\end{document}

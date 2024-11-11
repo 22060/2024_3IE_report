@@ -1,0 +1,8 @@
+SETC   3 
+STORE  0 
+SETC   2 
+STORE  1 
+LOAD   0 
+ADD    1 
+STORE  2 
+HALT     

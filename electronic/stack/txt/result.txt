@@ -1,0 +1,24 @@
+push (1) SUCCESS
+data:1 
+push (2) SUCCESS
+data:2 1 
+push (3) SUCCESS
+data:3 2 1 
+push (4) SUCCESS
+data:4 3 2 1 
+push (5) SUCCESS
+data:5 4 3 2 1 
+push (6) FAILURE
+data:5 4 3 2 1 
+pop SUCCESS
+data:4 3 2 1 
+pop SUCCESS
+data:3 2 1 
+pop SUCCESS
+data:2 1 
+pop SUCCESS
+data:1 
+pop SUCCESS
+data:
+pop FAILURE
+data:

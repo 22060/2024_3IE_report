@@ -1,0 +1,16 @@
+(define (myscm)
+  (display " >> ")
+  (flush)
+  (display (myeval (read)))
+  (newline)
+  (myscm))
+
+(define (myeval x)
+  (cond
+    ((number? x) x)
+    ((and (list? x) (member (car x) '(+ - * /)))
+      ((eval (cadr x) ())
+        (myeval (car x))
+        (myeval (caddr x)) ) )
+    (else (display "ERROR!  usage: (arg1 op arg2), op∈{+,-,*,/}")
+      (newline) ) ) )
