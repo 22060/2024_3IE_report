@@ -1,0 +1,131 @@
+\documentclass[a4paper,11pt]{ltjsarticle}
+% 数式
+\usepackage{amsmath,amsfonts}
+\usepackage{bm}
+% 画像
+\usepackage{graphicx}
+\usepackage{circuitikz}
+\usepackage{amsmath,amssymb}
+\usepackage{siunitx}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{askmaps}
+\usepackage{multirow}
+\usepackage{bigstrut}
+\usepackage{slashbox}
+\usepackage{rotating}
+\usepackage{listings}
+% 数式
+\usepackage{physics}
+\usepackage{mathtools}
+% 画像
+\usepackage{subcaption}
+% 表
+\usepackage{makecell}
+% その他
+\usepackage{url}
+\usepackage{ascmac}
+\usepackage{cases}
+\usepackage{here}
+\usepackage{upgreek}
+% 日本語対応
+\usepackage{luatexja}
+\usepackage{luatexja-fontspec}
+
+\AtBeginDocument{\RenewCommandCopy\qty\SI}
+
+
+\definecolor{commentgreen}{RGB}{0,200,0}
+\definecolor{eminence}{RGB}{120,80,250}
+\definecolor{weborange}{RGB}{255,165,0}
+\definecolor{frenchplum}{RGB}{10,150,200}
+\definecolor{commentgreen}{RGB}{0,200,0}
+\definecolor{eminence}{RGB}{120,80,250}
+\definecolor{weborange}{RGB}{255,165,0}
+\definecolor{frenchplum}{RGB}{10,150,200}
+
+\lstset{
+        language = {C},
+        basicstyle = \ttfamily\small,
+        keywordstyle=\color{eminence}\ttfamily\bfseries,
+        commentstyle=\color{commentgreen}\textit,
+    identifierstyle=\color{black}\ttfamily,
+        xleftmargin=.35in,
+        frame=lines,
+    showstringspaces=false,
+        numbers=left,
+        stepnumber = 1,
+        breaklines=true,
+        numberstyle = \ttfamily\normalsize,
+    tabsize=4,  
+        emph={int, int8_t, int16_t, int32_t, int64_t, uint8_t, uint16_t, uint32_t, uint64_t, char, double, float, unsigned, void, bool},
+        emphstyle={\color{blue}}, 
+        morekeywords={>, <, ., ;, +, -, *, /, !, =, ~},
+        breakindent = 10pt, 
+        framexleftmargin=10mm, 
+        columns=fixed,
+        basewidth=0.5em,
+        }
+
+% 特定のスタイル設定
+\lstdefinestyle{customtxt}{
+  basicstyle=\ttfamily\footnotesize,
+  backgroundcolor=\color{lightgray},
+  frame=single,
+  breaklines=true,
+  columns=fullflexible,
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  tabsize=4,
+}
+
+\newcommand{\fig}[4]{
+    \begin{figure}[htbp]
+      \centering
+      \includegraphics{./image/#1}
+      \caption{#2}
+      \label{fig:#3}
+    \end{figure}
+  }
+\begin{document}
+
+\section{デフォルトの共起ネットワーク}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=\columnwidth]{image/net.png}
+    \caption{共起ネットワーク}
+    \label{fig:net}
+\end{figure}
+\newpage
+\section{変更した設定}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width = \columnwidth]{image/config.png}
+    \caption{設定}
+    \label{fig:config}
+\end{figure}
+\newpage
+\section{変更後の共起ネットワーク}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width = \columnwidth]{image/net2.png}
+    \caption{ネットワーク}
+    \label{fig:net2}
+\end{figure}
+\newpage
+\section{アンケート結果の分析}
+このアンケート結果は、「現在公開しているオープンデータの分野について、あてはまるものを全て選択してください。」で「その他」を選択した場合は、公開しているオープンデータの分野を具体的にお答えください。
+というものである。\\
+一覧という単語の周りに設置や、AED、文化財などの単語がある。そのため、
+ものの設置場所をオープンデータとして公開しているところが多いと考えられる。また、コロナ-状況-施設-食品とつながっているため、新型コロナウィルスによる施設の状況や飲食店の情報をオープンデータとして公開していると考える。
+実際の回答例を\ref{fig:ans}に示す。
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width = \columnwidth]{image/example.png}
+    \caption{回答例}
+    \label{fig:ans}
+\end{figure}
+実際には、コロナウィルス関連ではなかった。コロナウィルスと施設関連では色分けが違ってたため、subgraphが異なってるときは関連性が低いのかなと思った。
+
+\end{document}
