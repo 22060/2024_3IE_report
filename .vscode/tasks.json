@@ -1,0 +1,91 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+  
+    // This is for Java Programming 1 class at Fukuoka Institute of Technology
+    // Copy this file into ".vscode" folder which is a subfolder of the workspace
+    // Type "Cntr + Shift + B" to compile and run the code
+    //
+    // Version 3.0.7, 2023.04.02
+    //
+    // Dependences on System Environment Variables:
+    // - JAVA_HOME is set on the JAVA SDK top folder such as C:\Program Files\Java\jdk-14.0.1
+    // - PATH includes the bin folder of the JAVA SDK such as %JAVA_HOME%\bin
+  
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "type": "shell",
+        "label": "Build by ARM g++",
+        "command": "gcc",
+        "args": [
+            "${fileDirname}\\main.c",
+            "${fileDirname}\\mulprec.c",
+            "-o",
+            "${fileDirname}\\mulprec.exe" // 作りたい実行ファイル名を直接書く
+        ],
+        "options": {
+            "cwd": "${workspaceFolder}"
+        },
+        "problemMatcher": [
+            "$gcc"
+        ],
+        "group": "build"
+    },
+    {
+      "label": "javac",
+      "type": "shell",
+      "options": {
+        "shell": {
+          "executable": "powershell.exe"
+        }
+      },
+      "command": "javac",
+      "args": [
+        "-encoding",
+        "utf-8",
+        "-d",
+        "'${fileDirname}\\bin'",
+        "-cp",
+        "'.;${fileDirname}'",
+        "${file}"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "java",
+      "type": "shell",
+      "options": {
+        "shell": {
+          "executable": "powershell.exe"
+        }
+      },
+      "command": "java",
+      "args": [
+        "-cp",
+        "'.;${fileDirname}\\bin'",
+        "${fileBasenameNoExtension}"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "dependsOn": [
+        "javac"
+      ]
+    },
+    {
+      "label": "lualatex",
+      "type": "shell",
+      "command": "lualatex",
+      "args": [
+        "${file}"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "problemMatcher": []
+    },
+    ]
+  }
