@@ -1,4 +1,4 @@
-     SETC  3    //  0: Acc <-- 3       3+2+1 -> M[0]
+     SETC  10    //  0: Acc <-- 3       3+2+1 -> M[0]
      STORE 0    //  2: R[0] <-- Acc
      SETC  0    //  4: Acc <-- 0
      STORE 1    //  6: R[1] <-- Acc
