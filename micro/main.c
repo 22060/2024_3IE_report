@@ -2,7 +2,8 @@
 
 int main() {
     float x = 2.0F;
-    float y = q_rsqrt(x);
+    float y = 0;
+    y = q_rsqrt(x);
     printf("1/sqrt(%f) = %f\n", x, y);
     return 0;
 }
