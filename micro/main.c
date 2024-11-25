@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+float q_rsqrt(float number);
 int main() {
     float x = 2.0F;
     float y = 0;
