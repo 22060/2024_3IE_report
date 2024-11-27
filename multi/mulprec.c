@@ -1,5 +1,5 @@
-#ifndef MULPREC.C
-#define EXTERN
+#ifndef MULPREC_C
+#define MULPREC_C
 #include "mulprec.h"
 #include <stdio.h>
 int numcolors[10] = {0, 31, 32, 33, 34, 91, 92, 93, 94, 95};
@@ -132,23 +132,19 @@ void dispNumber(const struct Number *a)
 
 void setRnd(struct Number *a, int keta)
 {
-    if(keta > KETA){
+    if (keta > KETA)
+    {
         keta = KETA;
     }
     for (int i = 0; i < keta; i++)
     {
-        a->n[i].value = (unsigned char)genrand_int32() % 10;
+        a->n[i].value = (unsigned char)(int)(genrand_int32() % 10);
     }
     setSign(a, PLUS);
 }
 
 int setInt(struct Number *a, int x)
 {
-    // if (x == 0)
-    // {
-    //     clearByZero(a);
-    //     return 0;
-    // }
     clearByZero(a);
     if (x > 0)
     {
@@ -165,7 +161,8 @@ int setInt(struct Number *a, int x)
         a->n[i].value = x % 10;
         x /= 10;
         i++;
-        if(i >= KETA){
+        if (i >= KETA)
+        {
             return -1;
         }
     }
@@ -223,32 +220,84 @@ int numComp(const struct Number *a, const struct Number *b)
     {
         return -1;
     }
-    else if(getSign(a) == PLUS && getSign(b) == PLUS){
-        for(int i = KETA / 16; i > 0 ; i--){
-            if(a->lli[i] != b->lli[i]){
-                printf("a->lli[%d] = %lld, b->lli[%d] = %lld\n", i, a->lli[i], i, b->lli[i]);
-                for(int j = 16; j > 0 ; j--){
-                    if(a->n[16 + j].value > b->n[16 + j].value){
-                        return -1;
-                    }else if(a->n[16 + j].value < b->n[16 + j].value){
-                        return 1;
-                    }
-                }
+    else if (getSign(a) == PLUS && getSign(b) == PLUS)
+    {
+        for (int i = KETA - 1; i >= 0; i--)
+        {
+            if (a->n[i].value > b->n[i].value)
+            {
+                return 1;
             }
-        }
-    }else if(getSign(a) == MINUS && getSign(b) == MINUS){
-        for(int i = KETA / 16; i > 0 ; i--){
-                for(int j = 16; j > 0 ; j--){
-                    if(a->n[16 + j].value > b->n[16 + j].value){
-                        return 1;
-                    }else if(a->n[16 + j].value < b->n[16 + j].value){
-                        return -1;
-                    }
-                }
+            else if (a->n[i].value < b->n[i].value)
+            {
+                return -1;
+            }
         }
         return 0;
     }
+    else if (getSign(a) == MINUS && getSign(b) == MINUS)
+    {
+        for (int i = KETA - 1; i >= 0; i--)
+        {
+            if (a->n[i].value > b->n[i].value)
+            {
+                return -1;
+            }
+            else if (a->n[i].value < b->n[i].value)
+            {
+                return 1;
+            }
+        }
+        return 0;
+    }
+}
 
+int add(const struct Number *a, const struct Number *b, struct Number *c)
+{
+    int carry = 0;
+    for (int i = 0; i < KETA; i++)
+    {
+        // printf("i = %d, a = %d, b = %d, c = %d, carry = %d, add = %d\n", i, a->n[i].value, b->n[i].value, c->n[i].value, carry, a->n[i].value + b->n[i].value);
+        c->n[i].value = (a->n[i].value + b->n[i].value + carry) % 10;
+        carry = (a->n[i].value + b->n[i].value + carry) / 10;
+        // printf("i = %d, a = %d, b = %d, c = %d, carry = %d, add = %d\n", i, a->n[i].value, b->n[i].value, c->n[i].value, carry, a->n[i].value + b->n[i].value);
+        if (i == KETA - 1 && carry > 0)
+        {
+            return -1;
+        }
+        // printf("%d\n", c->n[i].value);
+    }
+    return 0;
+}
 
+int sub(const struct Number *a, const struct Number *b, struct Number *c)
+{
+    int mem = 0;
+    switch (numComp(a, b))
+    {
+    case 1:
+        for (int i = 0; i < KETA; i++)
+        {
+            if (((a->n[i].value - b->n[i].value) < 0))
+            {
+                c->n[i].value = a->n[i].value - b->n[i].value + 10 - mem;
+                mem = 1;
+            }
+            else
+            {
+                c->n[i].value = a->n[i].value - b->n[i].value - mem;
+                mem = 0;
+            }
+        }
+        break;
+    case 0:
+        clearByZero(c);
+        return 0;
+    case -1:
+        sub(b, a, c);
+        setSign(c, MINUS);
+        break;
+    }
+    return 0;
 }
 #endif
