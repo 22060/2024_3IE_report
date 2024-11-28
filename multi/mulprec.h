@@ -1,7 +1,7 @@
 
 #ifndef MULPREC_H
 #define MULPREC_H
-#define KETA 10
+#define KETA 23000
 #define PLUS 1
 #define ZERO 0
 #define MINUS -1

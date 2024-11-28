@@ -2,6 +2,7 @@
 #define MULPREC_C
 #include "mulprec.h"
 #include <stdio.h>
+extern unsigned long genrand_int32();
 int numcolors[10] = {0, 31, 32, 33, 34, 91, 92, 93, 94, 95};
 int divBy10(const struct Number *a, struct Number *b)
 {
@@ -138,7 +139,7 @@ void setRnd(struct Number *a, int keta)
     }
     for (int i = 0; i < keta; i++)
     {
-        a->n[i].value = (unsigned char)(int)(genrand_int32() % 10);
+        a->n[i].value = (unsigned char)(genrand_int32() % 10);
     }
     setSign(a, PLUS);
 }
@@ -146,7 +147,11 @@ void setRnd(struct Number *a, int keta)
 int setInt(struct Number *a, int x)
 {
     clearByZero(a);
-    if (x > 0)
+    if (x == 0)
+    {
+        return 0;
+    }
+    else if (x > 0)
     {
         setSign(a, PLUS);
     }
@@ -212,7 +217,37 @@ int numComp(const struct Number *a, const struct Number *b)
     // if(getSign(a) == getSign(b) == ZERO){
     //     return 0;
     // }else
-    if (getSign(a) == PLUS && getSign(b) == MINUS)
+    if (getSign(a) == ZERO)
+    {
+        if (getSign(b) == PLUS)
+        {
+            return -1;
+        }
+        else if (getSign(b) == MINUS)
+        {
+            return 1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    else if (getSign(b) == ZERO)
+    {
+        if (getSign(a) == PLUS)
+        {
+            return 1;
+        }
+        else if (getSign(a) == MINUS)
+        {
+            return -1;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    else if (getSign(a) == PLUS && getSign(b) == MINUS)
     {
         return 1;
     }
@@ -250,13 +285,56 @@ int numComp(const struct Number *a, const struct Number *b)
         }
         return 0;
     }
+    return 0;
 }
 
 int add(const struct Number *a, const struct Number *b, struct Number *c)
 {
     int carry = 0;
+    struct Number d;
+    if (getSign(a) == ZERO)
+    {
+        copyNumber(b, c);
+        return 0;
+    }
+    else if (getSign(b) == ZERO)
+    {
+        copyNumber(a, c);
+        return 0;
+    }
+    else if (getSign(a) == PLUS && getSign(b) == MINUS)
+    {
+        getAbs(b, &d);
+        sub(a, &d, c);
+        return 0;
+    }
+    else if (getSign(b) == PLUS && getSign(a) == MINUS)
+    {
+        getAbs(a, &d);
+        sub(b, &d, c);
+        return 0;
+    }
+    else if (getSign(a) == MINUS && getSign(b) == MINUS)
+    {
+        setSign(c, MINUS);
+    }
+    else
+    { // PLUS, PLUS
+        setSign(c, PLUS);
+    }
+
     for (int i = 0; i < KETA; i++)
     {
+
+        // if (((i % 8) == 0) && (carry == 0) && (i != 0))
+        // {
+        //     if (a->lli[i / 8] == 0)
+        //     {
+        //         if (i == 0)
+        //             printf("%lld\n", a->lli[i / 8]);
+        //         break;
+        //     }
+        // }
         // printf("i = %d, a = %d, b = %d, c = %d, carry = %d, add = %d\n", i, a->n[i].value, b->n[i].value, c->n[i].value, carry, a->n[i].value + b->n[i].value);
         c->n[i].value = (a->n[i].value + b->n[i].value + carry) % 10;
         carry = (a->n[i].value + b->n[i].value + carry) / 10;
@@ -267,20 +345,60 @@ int add(const struct Number *a, const struct Number *b, struct Number *c)
         }
         // printf("%d\n", c->n[i].value);
     }
+    if (getInt(c) == 0)
+    {
+        setSign(c, ZERO);
+        printf("setSign(c, ZERO)\n");
+    }
     return 0;
 }
 
 int sub(const struct Number *a, const struct Number *b, struct Number *c)
 {
+    struct Number d;
+    struct Number e;
     int mem = 0;
+    if(getSign(a) == ZERO){
+        copyNumber(b, c);
+        setSign(c, getSign(b) * -1);
+        return 0;
+    }else if(getSign(b) == ZERO){
+        copyNumber(a, c);
+        setSign(c, getSign(a));
+        return 0;
+    }else if(getSign(a) == PLUS && getSign(b) == MINUS){
+        getAbs(b, &d);
+        add(a, &d, c);
+        setSign(c, PLUS);
+        return 0;
+    }else if(getSign(a) == MINUS && getSign(b) == PLUS){
+        getAbs(a, &d);
+        add(&d, b, c);
+        setSign(c, MINUS);
+        return 0;
+    }else if(getSign(a) == MINUS && getSign(b) == MINUS){
+        getAbs(a, &d);
+        getAbs(b, &e);
+        sub(&e, &d, c);
+        return 0;
+    }
     switch (numComp(a, b))
     {
     case 1:
         for (int i = 0; i < KETA; i++)
         {
-            if (((a->n[i].value - b->n[i].value) < 0))
+            if (((i % 8) == 0) && (mem == 0) && (i != 0))
             {
-                c->n[i].value = a->n[i].value - b->n[i].value + 10 - mem;
+                if (a->lli[i / 8] == 0)
+                {
+                    if (i == 0)
+                        printf("%lld\n", a->lli[i / 8]);
+                    break;
+                }
+            }
+            if (((a->n[i].value - b->n[i].value - mem) < 0))
+            {
+                c->n[i].value = a->n[i].value - b->n[i].value - mem + 10;
                 mem = 1;
             }
             else
@@ -289,6 +407,7 @@ int sub(const struct Number *a, const struct Number *b, struct Number *c)
                 mem = 0;
             }
         }
+        setSign(c, PLUS);
         break;
     case 0:
         clearByZero(c);
