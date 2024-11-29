@@ -358,29 +358,39 @@ int sub(const struct Number *a, const struct Number *b, struct Number *c)
     struct Number d;
     struct Number e;
     int mem = 0;
-    if(getSign(a) == ZERO){
+    int num;
+    if (getSign(a) == ZERO)
+    {
         copyNumber(b, c);
         setSign(c, getSign(b) * -1);
         return 0;
-    }else if(getSign(b) == ZERO){
+    }
+    else if (getSign(b) == ZERO)
+    {
         copyNumber(a, c);
         setSign(c, getSign(a));
         return 0;
-    }else if(getSign(a) == PLUS && getSign(b) == MINUS){
+    }
+    else if (getSign(a) == PLUS && getSign(b) == MINUS)
+    {
         getAbs(b, &d);
-        add(a, &d, c);
+        num = add(a, &d, c);
         setSign(c, PLUS);
-        return 0;
-    }else if(getSign(a) == MINUS && getSign(b) == PLUS){
+        return num;
+    }
+    else if (getSign(a) == MINUS && getSign(b) == PLUS)
+    {
         getAbs(a, &d);
-        add(&d, b, c);
+        num = add(&d, b, c);
         setSign(c, MINUS);
-        return 0;
-    }else if(getSign(a) == MINUS && getSign(b) == MINUS){
+        return num;
+    }
+    else if (getSign(a) == MINUS && getSign(b) == MINUS)
+    {
         getAbs(a, &d);
         getAbs(b, &e);
-        sub(&e, &d, c);
-        return 0;
+        num = sub(&e, &d, c);
+        return num;
     }
     switch (numComp(a, b))
     {
@@ -416,6 +426,97 @@ int sub(const struct Number *a, const struct Number *b, struct Number *c)
         sub(b, a, c);
         setSign(c, MINUS);
         break;
+    }
+    return 0;
+}
+
+int simpleMultiple(const struct Number *a, const struct Number *b, struct Number *c)
+{
+    static struct Number num;
+    static struct Number anum;
+    static struct Number one;
+    static struct Number memo;
+    one.n[0].value = 1;
+    setSign(&one, PLUS);
+    // static int i = 0;
+    if (getSign(a) == ZERO || getSign(b) == ZERO)
+    {
+        return 0;
+    }
+    if (numComp(a, b) == -1)
+    {
+        simpleMultiple(b, a, c);
+    }
+    // if (a < b)
+    // {
+    //     simpleMultiple(b, a, c);
+    // }
+    getAbs(a, &num);
+    getAbs(b, &anum);
+    clearByZero(c);
+    // printf("a = %d, b = %d\n", *a, *b);
+    // while (1)
+    // {
+    //     if (isZero(&num) == 0)
+    //     {
+    //         break;
+    //     }
+    //     // printf("i = %d, num = %d\n", i, num);
+    //     add(c, &anum, c);
+    //     sub(&num, &one, &num);
+    // }
+    while (isZero(&num) == -1)
+    {
+        add(c, &anum, &memo);
+        copyNumber(&memo, c);
+        sub(&num, &one, &memo);
+        copyNumber(&memo, &num);
+    }
+    // printf("c = %d\n", *c);
+    if (getSign(a) != getSign(b))
+    {
+        setSign(c, MINUS);
+    }
+    return 0;
+}
+int multiple(const struct Number *a, const struct Number *b, struct Number *c)
+{
+    static struct Number d;
+    static struct Number e;
+    static struct Number f;
+    clearByZero(c);
+    setSign(c, PLUS);
+    clearByZero(&d);
+    setSign(&d, PLUS);
+    clearByZero(&e);
+    setSign(&e, PLUS);
+    for (int i = 0; i < KETA; i++)
+    {
+        clearByZero(&d);
+        setSign(&d, PLUS);
+        clearByZero(&e);
+        setSign(&e, PLUS);
+        clearByZero(&f);
+        setSign(&f, PLUS);
+        for (int j = 0; j < b->n[i].value; j++)
+        {
+            add(&f, a, &d);
+            // printf("f = %d, a = %d, d = %d\n", getInt(&f), getInt(a), getInt(&d));
+            // printf("f + a = %d\n", getInt(&f) + getInt(a));
+            copyNumber(&d, &f);
+            // printf("d = %d, e = %d\n", getInt(&d), getInt(&e));
+            // printf("d = %d, e = %d\n", getInt(&d), getInt(&e));
+        }
+        for (int t = 0; t < i; t++)
+        {
+            mulBy10(&d, &e);
+            copyNumber(&e, &d);
+        }
+        clearByZero(&f);
+        add(c, &d, &f);
+        copyNumber(&f, c);
+        // printf("i = %d, d = %d,c = %d\n", i, getInt(&d), getInt(c));
+        // printf("i = %d, c = %d,j = %d\n", i, getInt(c), b->n[i].value);
     }
     return 0;
 }

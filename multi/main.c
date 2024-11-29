@@ -5,7 +5,7 @@
 #include <MT.h>
 #include "mulprec.h"
 #define FIBONACCI 0
-#define LOOP 10000
+#define LOOP 1
 int main()
 {
     struct Number a;
@@ -46,38 +46,79 @@ int main()
     int z = 0;
     int add_error = 0;
     int sub_error = 0;
-    times = time(NULL);
+    int mul_error = 0;
+    times = (int)time(NULL);
     for (int i = 0; i < LOOP; i++)
     {
-        x = (int)genrand_int32() %10000;
-        y = (int)genrand_int32() %10000;
+        x = (int)genrand_int32() % 100;
+        y = (int)genrand_int32() % 100;
         // x = abs(x);
         // y = abs(y);
-        // x = 10;
-        // y = 5;
+        x = 1234;
+        y = 568;
         // printf("x = %d, y = %d\n", x, y);
         clearByZero(&a);
         clearByZero(&b);
         clearByZero(&c);
+        /*******************************************************************/
+        /* setInt test                                                     */
+        /*******************************************************************/
         setInt(&a, x);
         setInt(&b, y);
-        if(getInt(&a) != x){
+        if (getInt(&a) != x)
+        {
             printf("ERROR\n");
             printf("x = %d, a = %d\n", x, getInt(&a));
         }
-        if(getInt(&b) != y){
+        if (getInt(&b) != y)
+        {
             printf("ERROR\n");
             printf("y = %d, b = %d\n", y, getInt(&b));
         }
-        // printf("a = %d, b = %d\n", getInt(&a), getInt(&b));
-        // printf("x = %d, a = %d \n", x, getInt(&a));
-        // printf("x - a = %d\n", x - getInt(&a));
-        // printf("sub test %d\n", sub(&a, &b, &c));
+
+        /*******************************************************************/
+        /* multiple test                                                   */
+        /*******************************************************************/
+        if (multiple(&a, &b, &c) == -1)
+        {
+            printf("ERROR\n");
+        }
+        z = x * y;
+        printf("multiple = %d\n", getInt(&c));
+        if (getInt(&c) != z)
+        {
+            printf("====================================\n");
+            printf("ERROR\n");
+            printf("x = %d, y = %d\n", x, y);
+            printf("multiple = %d\n", getInt(&c));
+            printf("x * y = %d\n", x * y);
+            printf("====================================\n");
+        }
+        /*******************************************************************/
+        /* simpleMultiple test                                             */
+        /*******************************************************************/
+        if (simpleMultiple(&a, &b, &c) == -1)
+        {
+            printf("ERROR\n");
+        }
+        z = x * y;
+        if (getInt(&c) != z)
+        {
+            printf("====================================\n");
+            printf("ERROR\n");
+            printf("x = %d, y = %d\n", x, y);
+            printf("simpleMultiple = %d\n", getInt(&c));
+            printf("x * y = %d\n", x * y);
+            printf("====================================\n");
+            mul_error++;
+        }
+        /*******************************************************************/
+        /* sub test                                                        */
+        /*******************************************************************/
         if (sub(&a, &b, &c) == -1)
         {
             printf("ERROR\n");
         }
-        // setSign(&c, PLUS);
         z = x - y;
         if (getInt(&c) - z != 0)
         {
@@ -88,12 +129,15 @@ int main()
             printf("(a - b) - (x - y) = %d\n", getInt(&c) - (z));
             printf("ERROR\n");
             printf("====================================\n");
+            sub_error++;
         }
+        /*******************************************************************/
+        /* add test                                                        */
+        /*******************************************************************/
         if (add(&a, &b, &c) == -1)
         {
             printf("ERROR\n");
         }
-        // setSign(&c, PLUS);
         z = x + y;
         if (getInt(&c) - (x + y) != 0)
         {
@@ -107,14 +151,9 @@ int main()
             printf("ERROR\n");
             add_error++;
         }
-        // printf("x = %d,y = %d\n", x, y);
-        // printf("a + b = %ld\n", getInt(&c));
-        // printf("x + y = %ld\n", x + y);
-        // printf("(a + b) - (x + y) = %ld\n", getInt(&c) - (x + y));
-        // printf("a = ");
-        // dispNumber(&a);
-        // printf("\n");
-        // printf("x = %d\n", x);
+        /*******************************************************************/
+        /* numComp test                                                    */
+        /*******************************************************************/
         if (x > y)
         {
             if (numComp(&a, &b) != 1)
@@ -147,11 +186,12 @@ int main()
             }
         }
     }
-    times = time(NULL) - times;
+    times = (int)time(NULL) - times;
     printf("--------------------\n");
     printf("LOOP = %d\n", LOOP);
     printf("add error = %d\n", add_error);
     printf("sub error = %d\n", sub_error);
+    printf("mul error = %d\n", mul_error);
     printf("time = %d\n", times);
     printf("--------------------\n");
     int f0 = 0;
@@ -164,7 +204,7 @@ int main()
     setSign(&a, PLUS);
     setSign(&b, PLUS);
     setSign(&c, PLUS);
-    times = time(NULL);
+    times = (int)time(NULL);
     for (int i = 0; i < FIBONACCI - 1; i++)
     {
         add(&a, &b, &c);
@@ -172,7 +212,7 @@ int main()
         copyNumber(&c, &b);
         // printf("%d = %d\n", i+2, getInt(&c));
     }
-    times = time(NULL) - times;
+    times = (int)time(NULL) - times;
     setSign(&c, isZero(&c));
     printf("Fibonacci(%d) = ", FIBONACCI);
     dispNumber(&c);
