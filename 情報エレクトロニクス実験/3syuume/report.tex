@@ -1,0 +1,126 @@
+\documentclass[a4paper,11pt]{ltjsarticle}
+% 数式
+\usepackage{amsmath,amsfonts}
+\usepackage{bm}
+% 画像
+\usepackage{graphicx}
+\usepackage{circuitikz}
+\usepackage{amsmath,amssymb}
+\usepackage{siunitx}
+\usepackage{float}
+\usepackage{tikz}
+\usepackage{askmaps}
+\usepackage{multirow}
+\usepackage{bigstrut}
+\usepackage{slashbox}
+\usepackage{rotating}
+\usepackage{listings}
+% 数式
+\usepackage{physics}
+\usepackage{mathtools}
+% 画像
+\usepackage{subcaption}
+% 表
+\usepackage{makecell}
+% その他
+\usepackage{url}
+\usepackage{ascmac}
+\usepackage{cases}
+\usepackage{here}
+\usepackage{upgreek}
+% 日本語対応
+\usepackage{luatexja}
+\usepackage{luatexja-fontspec}
+
+\AtBeginDocument{\RenewCommandCopy\qty\SI}
+
+
+\definecolor{commentgreen}{RGB}{0,200,0}
+\definecolor{eminence}{RGB}{120,80,250}
+\definecolor{weborange}{RGB}{255,165,0}
+\definecolor{frenchplum}{RGB}{10,150,200}
+\definecolor{commentgreen}{RGB}{0,200,0}
+\definecolor{eminence}{RGB}{120,80,250}
+\definecolor{weborange}{RGB}{255,165,0}
+\definecolor{frenchplum}{RGB}{10,150,200}
+
+\lstset{
+        language = {C},
+        basicstyle = \ttfamily\small,
+        keywordstyle=\color{eminence}\ttfamily\bfseries,
+        commentstyle=\color{commentgreen}\textit,
+    identifierstyle=\color{black}\ttfamily,
+        xleftmargin=.35in,
+        frame=lines,
+    showstringspaces=false,
+        numbers=left,
+        stepnumber = 1,
+        breaklines=true,
+        numberstyle = \ttfamily\normalsize,
+    tabsize=4,  
+        emph={int, int8_t, int16_t, int32_t, int64_t, uint8_t, uint16_t, uint32_t, uint64_t, char, double, float, unsigned, void, bool},
+        emphstyle={\color{blue}}, 
+        morekeywords={>, <, ., ;, +, -, *, /, !, =, ~},
+        breakindent = 10pt, 
+        framexleftmargin=10mm, 
+        columns=fixed,
+        basewidth=0.5em,
+        }
+
+% 特定のスタイル設定
+\lstdefinestyle{customtxt}{
+  basicstyle=\ttfamily\footnotesize,
+  backgroundcolor=\color{lightgray},
+  frame=single,
+  breaklines=true,
+  columns=fullflexible,
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  tabsize=4,
+}
+
+\newcommand{\fig}[4]{
+    \begin{figure}[htbp]
+      \centering
+      \includegraphics{./image/#1}
+      \caption{#2}
+      \label{fig:#3}
+    \end{figure}
+  }
+\begin{document}
+
+
+
+\section{目的}
+減算回路のリバースエンジニアリングを行い、その動作原理を真理値表の作成、回路図の作成を通して理解する。
+\section{原理}
+\subsection{補数}
+補数とは、ある数値とその数値を足すとちょうど繰り上がる数字のことを指す。
+例えば10進数では、$69$に対する補数は$(100 - 69) = 31$である。
+今回では0から7の数字を扱うため、8進数を用いて論理式の計算を行い、
+回路上での論理回路では2進数を用いて計算を行う。
+8進数での補数表現では、$n$に対する補数は$(8^m - n)$である。$m$は桁数である
+2進数での補数表現は、$n$に対する補数は$(2^m - n)$である。$m$は桁数である。
+この補数を求める操作は、ビット反転と1の加算を行うことで求めることができる。動作原理として、$n$に対する進数
+から1を引いた進数では値を桁上がりをしない範囲で最大にするものであるので、$2^m$から$n$を引いた値を求めることで補数を求めることができる。
+これを二進数で行うとビットの反転であり、2の補数にするためには値を1加算することで求めることができることがわかる。
+例えば、$1 - 5$を行う場合には、5の補数 + 1を行うことで求めることができる。5の補数は$(2^3 - 5)_(10)= (3)_(10)$または、$(101)$を反転して$(010)$となる。これに$(001)_2$を足すと$(011)_2 = (3)_(10)$であるため、$(3 + 1)_(10) = (4)_(10)$となる。
+\subsection{減算}
+減算を行うときには補数を使用する。例えば$1 - 5$を行う場合には、$1 + (2^3 - 5) = 1 + 3$となる。補数を使った計算の場合符号が$m$の次のビットに現れて、$1$の場合は
+正の数であることを示し、$0$の場合は負の数であることを示す。例として$5 - 1$を行うと$(1)_2$を補数にして$ (101)_2 + (111)_2 = (1100)_2$となり、4bit目に符号が現れる。
+原理として、$a - b \geq 0$の場合$ a + (8 - b) \geq 8$となる。そのため、4bit目が1になる。逆に$a - b < 0$の場合、$a + (8 - b) < 8$となる。そのため、4bit目が0になる。
+\subsection{計算結果が補数になる原理}
+減算の原理を示したが、$(1-6)_(10)$の計算を行うとき、補数と加算を使った計算をすると計算結果が補数となる。
+このようになる条件としては、減算の結果が負の数になるときである。$(1 - 6)_(10)$の例で示すと、$(001)_2 + (010)_2 = (011)_2$となる。この結果は$(3)_(10)$であるが、これは$-5$の補数である。
+これを二進数の絶対値に戻すには$(0)_(10) -(- 5)_(10)$を行うとできる。$(011)_2$の補数は$(101)_2 = (5)_(10)$となる。
+\section{結果}
+\section{考察}
+\section{報告事項}
+\section{考察}
+
+
+
+
+
+\end{document}
