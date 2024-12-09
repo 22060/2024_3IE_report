@@ -1,7 +1,7 @@
 
 #ifndef MULPREC_H
 #define MULPREC_H
-#define KETA 20
+#define KETA 10
 #define PLUS 1
 #define ZERO 0
 #define MINUS -1
@@ -42,4 +42,9 @@ a = b : 0
 a < b : -1
 */
 int numComp(const struct Number *a, const struct Number *b);
+
+int add(const struct Number *a, const struct Number *b, struct Number *c);
+int sub(const struct Number *a, const struct Number *b, struct Number *c);
+int simpleMultiple(const struct Number *a, const struct Number *b, struct Number *c);
+int multiple(const struct Number *a, const struct Number *b, struct Number *c);
 #endif

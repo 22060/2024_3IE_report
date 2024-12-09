@@ -66,6 +66,7 @@
   ],
   "files.associations": {
     "*.embeddedhtml": "html",
-    "stdlib.h": "c"
+    "stdlib.h": "c",
+    "mt.h": "c"
   }
 }
