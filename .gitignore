@@ -5,3 +5,5 @@ output
 bin
 lib
 .vscode
+java
+.java

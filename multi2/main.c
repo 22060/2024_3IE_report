@@ -5,7 +5,7 @@
 #include <MT.h>
 #include "mulprec.h"
 #define FIBONACCI 0
-#define LOOP 1
+#define LOOP 1000000
 int main()
 {
     struct Number a;
@@ -17,36 +17,13 @@ int main()
     clearByZero(&a);
     clearByZero(&b);
     clearByZero(&c);
-    a.n[0].value = 0;
-    a.n[1].value = 1;
-    a.sgn = PLUS;
-    printf("a = ");
-    // dispNumber(&a);
-    printf("\n");
-    setRnd(&a, 100000);
-    printf("b = ");
-    // dispNumber(&b);
-    printf("\n");
-    if (mulBy10(&a, &b) == -1)
-    {
-        printf("ERROR\n");
-    }
-    printf("b = ");
-    // dispNumber(&b);
-    printf("\n");
-    // while (isZero(&b) == -1)
-    // {
-    //     divBy10(&b, &b);
-    //     // printf("b = ");
-    //     // dispNumber(&b);
-    //     // printf("\n");
-    // }
     int x = 0;
     int y = 0;
     int z = 0;
     int add_error = 0;
     int sub_error = 0;
     int mul_error = 0;
+    int div_error = 0;
     times = (int)time(NULL);
     for (int i = 0; i < LOOP; i++)
     {
@@ -54,8 +31,8 @@ int main()
         y = (int)genrand_int32() % 100;
         // x = abs(x);
         // y = abs(y);
-        x = 1234;
-        y = 568;
+        // x = 9;
+        // y = 1;
         // printf("x = %d, y = %d\n", x, y);
         clearByZero(&a);
         clearByZero(&b);
@@ -75,7 +52,26 @@ int main()
             printf("ERROR\n");
             printf("y = %d, b = %d\n", y, getInt(&b));
         }
-
+        /*******************************************************************/
+        /* simpleDivide test                                               */
+        /*******************************************************************/
+        
+        simpleDivide(&a, &b, &c);
+        if(y != 0){
+            z = x / y;
+        }else{
+            z = 0;
+        }
+        if (getInt(&c) != abs(z))
+        {
+            printf("====================================\n");
+            printf("ERROR\n");
+            printf("x = %d, y = %d\n", x, y);
+            printf("simpleDivide = %d\n", getInt(&c));
+            printf("x / y = %d\n", abs(z));
+            printf("====================================\n");
+            div_error++;
+        }
         /*******************************************************************/
         /* multiple test                                                   */
         /*******************************************************************/
@@ -84,8 +80,7 @@ int main()
             printf("ERROR\n");
         }
         z = x * y;
-        printf("multiple = %d\n", getInt(&c));
-        if (getInt(&c) != abs(z))
+        if (abs(getInt(&c)) != abs(z))
         {
             printf("====================================\n");
             printf("ERROR\n");
@@ -139,6 +134,7 @@ int main()
             printf("ERROR\n");
         }
         z = x + y;
+        // printf("c = %d\n", getInt(&c));
         if (getInt(&c) - (x + y) != 0)
         {
             printf("___________________________________\n");
@@ -192,6 +188,7 @@ int main()
     printf("add error = %d\n", add_error);
     printf("sub error = %d\n", sub_error);
     printf("mul error = %d\n", mul_error);
+    printf("div error = %d\n", div_error);
     printf("time = %d\n", times);
     printf("--------------------\n");
     int f0 = 0;

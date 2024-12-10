@@ -12,34 +12,24 @@ int divBy10(const struct Number *a, struct Number *b)
         clearByZero(b);
         return 0;
     }
-    b->n[KETA - 1].value = 0;
+    b->n[KETA - 1] = 0;
     for (i = 0; i < KETA - 1; i++)
     {
         b->n[i] = a->n[i + 1];
     }
     setSign(b, getSign(a));
-#if KETA >= 16
-    int flag = 0;
-    for (i = 0; i < KETA / 16; i++)
+    for (i = 0; i < KETA; i++)
     {
-        if (b->lli[i] != 0)
+        if (b->n[i] != 0)
         {
-            flag = 1;
             break;
         }
+        if (i == KETA - 1)
+        {
+            setSign(b, ZERO);
+        }
     }
-    if (flag == 0)
-    {
-        setSign(b, ZERO);
-    }
-#else
-    if (b->lli[0] == 0)
-    {
-        setSign(b, ZERO);
-    }
-#endif
-
-    return a->n[0].value;
+    return a->n[0];
 }
 int mulBy10(const struct Number *a, struct Number *b)
 {
@@ -49,14 +39,14 @@ int mulBy10(const struct Number *a, struct Number *b)
         clearByZero(b);
         return 0;
     }
-    b->n[0].value = 0;
+    b->n[0] = 0;
     for (i = 0; i < KETA - 1; i++)
     {
         b->n[i + 1] = a->n[i];
     }
-    b->n[KETA - 1].value = 0;
+    b->n[KETA - 1] = 0;
     setSign(b, getSign(a));
-    if (a->n[KETA - 1].value != 0)
+    if (a->n[KETA - 1] != 0)
     {
         return -1;
     }
@@ -74,7 +64,7 @@ int isZero(const struct Number *a)
     }
     for (int i = 0; i < KETA; i++)
     {
-        if (a->n[i].value != 0)
+        if (a->n[i] != 0)
         {
             return -1;
         }
@@ -98,7 +88,7 @@ void clearByZero(struct Number *a)
 {
     for (int i = 0; i < KETA; i++)
     {
-        a->n[i].value = 0;
+        a->n[i] = 0;
     }
     setSign(a, ZERO);
 }
@@ -125,8 +115,8 @@ void dispNumber(const struct Number *a)
     }
     for (int i = KETA - 1; i >= 0; i--)
     {
-        printf("\x1b[%dm", numcolors[a->n[i].value]);
-        printf(" %d", a->n[i].value);
+        printf("\x1b[%dm", numcolors[a->n[i]]);
+        printf(" %d", a->n[i]);
         printf("\x1b[0m");
     }
 }
@@ -139,7 +129,7 @@ void setRnd(struct Number *a, int keta)
     }
     for (int i = 0; i < keta; i++)
     {
-        a->n[i].value = (unsigned char)(genrand_int32() % 10);
+        a->n[i] = (unsigned char)(genrand_int32() % 10);
     }
     setSign(a, PLUS);
 }
@@ -163,7 +153,7 @@ int setInt(struct Number *a, int x)
     int i = 0;
     while (x > 0)
     {
-        a->n[i].value = x % 10;
+        a->n[i] = x % 10;
         x /= 10;
         i++;
         if (i >= KETA)
@@ -179,7 +169,7 @@ int getInt(const struct Number *a)
     int x = 0;
     for (int i = KETA - 1; i >= 0; i--)
     {
-        x = x * 10 + a->n[i].value;
+        x = x * 10 + a->n[i];
     }
     if (getSign(a) == MINUS)
     {
@@ -259,11 +249,11 @@ int numComp(const struct Number *a, const struct Number *b)
     {
         for (int i = KETA - 1; i >= 0; i--)
         {
-            if (a->n[i].value > b->n[i].value)
+            if (a->n[i] > b->n[i])
             {
                 return 1;
             }
-            else if (a->n[i].value < b->n[i].value)
+            else if (a->n[i] < b->n[i])
             {
                 return -1;
             }
@@ -274,11 +264,11 @@ int numComp(const struct Number *a, const struct Number *b)
     {
         for (int i = KETA - 1; i >= 0; i--)
         {
-            if (a->n[i].value > b->n[i].value)
+            if (a->n[i] > b->n[i])
             {
                 return -1;
             }
-            else if (a->n[i].value < b->n[i].value)
+            else if (a->n[i] < b->n[i])
             {
                 return 1;
             }
@@ -335,20 +325,21 @@ int add(const struct Number *a, const struct Number *b, struct Number *c)
         //         break;
         //     }
         // }
-        // printf("i = %d, a = %d, b = %d, c = %d, carry = %d, add = %d\n", i, a->n[i].value, b->n[i].value, c->n[i].value, carry, a->n[i].value + b->n[i].value);
-        c->n[i].value = (a->n[i].value + b->n[i].value + carry) % 10;
-        carry = (a->n[i].value + b->n[i].value + carry) / 10;
-        // printf("i = %d, a = %d, b = %d, c = %d, carry = %d, add = %d\n", i, a->n[i].value, b->n[i].value, c->n[i].value, carry, a->n[i].value + b->n[i].value);
+        // printf("i = %d, a = %d, b = %d, c = %d, carry = %d, add = %d\n", i, a->n[i], b->n[i], c->n[i], carry, a->n[i] + b->n[i]);
+        // printf("i = %d, a = %d, b = %d, c = %d, carry = %d, add = %d\n", i, a->n[i], b->n[i], c->n[i], carry, a->n[i] + b->n[i]);
+        c->n[i] = (a->n[i] + b->n[i] + carry) % 10;
+        carry = (a->n[i] + b->n[i] + carry) / 10;
+        // printf("i = %d, a = %d, b = %d, c = %d, carry = %d, add = %d\n", i, a->n[i], b->n[i], c->n[i], carry, a->n[i] + b->n[i]);
         if (i == KETA - 1 && carry > 0)
         {
             return -1;
         }
-        // printf("%d\n", c->n[i].value);
+        // printf("%d\n", c->n[i]);
     }
     if (getInt(c) == 0)
     {
         setSign(c, ZERO);
-        printf("setSign(c, ZERO)\n");
+        // printf("setSign(c, ZERO)\n");
     }
     return 0;
 }
@@ -406,14 +397,14 @@ int sub(const struct Number *a, const struct Number *b, struct Number *c)
             //         break;
             //     }
             // }
-            if (((a->n[i].value - b->n[i].value - mem) < 0))
+            if (((a->n[i] - b->n[i] - mem) < 0))
             {
-                c->n[i].value = a->n[i].value - b->n[i].value - mem + 10;
+                c->n[i] = a->n[i] - b->n[i] - mem + 10;
                 mem = 1;
             }
             else
             {
-                c->n[i].value = a->n[i].value - b->n[i].value - mem;
+                c->n[i] = a->n[i] - b->n[i] - mem;
                 mem = 0;
             }
         }
@@ -436,7 +427,7 @@ int simpleMultiple(const struct Number *a, const struct Number *b, struct Number
     static struct Number anum;
     static struct Number one;
     static struct Number memo;
-    one.n[0].value = 1;
+    one.n[0] = 1;
     setSign(&one, PLUS);
     // static int i = 0;
     if (getSign(a) == ZERO || getSign(b) == ZERO)
@@ -498,7 +489,7 @@ int multiple(const struct Number *a, const struct Number *b, struct Number *c)
         setSign(&e, PLUS);
         clearByZero(&f);
         setSign(&f, PLUS);
-        for (int j = 0; j < b->n[i].value; j++)
+        for (int j = 0; j < b->n[i]; j++)
         {
             add(&f, a, &d);
             // printf("f = %d, a = %d, d = %d\n", getInt(&f), getInt(a), getInt(&d));
@@ -516,8 +507,50 @@ int multiple(const struct Number *a, const struct Number *b, struct Number *c)
         add(c, &d, &f);
         copyNumber(&f, c);
         // printf("i = %d, d = %d,c = %d\n", i, getInt(&d), getInt(c));
-        // printf("i = %d, c = %d,j = %d\n", i, getInt(c), b->n[i].value);
+        // printf("i = %d, c = %d,j = %d\n", i, getInt(c), b->n[i]);
     }
     return 0;
+}
+
+int simpleDivide(const struct Number *a, const struct Number *b, struct Number *c)
+{
+    struct Number num;
+    clearByZero(c);
+    clearByZero(&num);
+    copyNumber(a, &num);
+    getAbs(a, &num);
+    static int n;
+    n = 0;
+    // printf("a = %d, b = %d\n", getInt(a), getInt(b));
+    if (getSign(a) == ZERO || getSign(b) == ZERO)
+    {
+        clearByZero(c);
+        return 0;
+    }
+    else if (getSign(b) == PLUS)
+    {
+        while (numComp(b, &num) != 1 && num.sgn != MINUS)
+
+        {
+            // printf("num = %d, b = %d,", getInt(&num), getInt(b));
+            sub(&num, b, &num);
+            n++;
+            // printf("c = %d\n", getInt(c));
+        }
+    }
+    else if (getSign(b) == MINUS)
+    {
+        while ((numComp(b, &num) != 1) && (num.sgn != MINUS))
+        {
+            // printf("num = %d, b = %d,", getInt(&num), getInt(b));
+            add(&num, b, &num);
+            n++;
+            // printf("c = %d\n", getInt(c));
+        }
+        n--;
+    }
+    setInt(c, n);
+    setSign(c, PLUS);
+    return num.n[0];
 }
 #endif
