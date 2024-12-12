@@ -189,7 +189,7 @@ ICの場所を画像\ref{fig:ic}に示す。また、ICの取り付ける場所�
         \hline
         $A = B$ & $C$ & $LED$ \\
         \hline
-        0 & $|A - B|$ & 0 \\
+        0 & $|A - B|$ & * \\
         1 & 0 & 1 \\
         \hline
     \end{tabular}
@@ -197,12 +197,13 @@ ICの場所を画像\ref{fig:ic}に示す。また、ICの取り付ける場所�
 \end{table}
 \subsection{回路図}
 回路図を図\ref{fig:circ}に示す。
-\begin{figure}[H]
+\begin{figure}[htbp]
     \centering
     \includegraphics[angle=90,width=\columnwidth]{./image/genzan.png}
     \caption{回路図}
     \label{fig:circ}
 \end{figure}
+\newpage
 \section{考察}
 減算回路のリバースエンジニアリングを行った結果御もとに考察を書いていく。
 \subsection{真理値表}
