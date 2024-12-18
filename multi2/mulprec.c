@@ -280,8 +280,10 @@ int numComp(const struct Number *a, const struct Number *b)
 
 int add(const struct Number *a, const struct Number *b, struct Number *c)
 {
-    int carry = 0;
+    static int carry;
+    carry = 0;
     struct Number d;
+    clearByZero(&d);
     if (getSign(a) == ZERO)
     {
         copyNumber(b, c);
@@ -315,20 +317,9 @@ int add(const struct Number *a, const struct Number *b, struct Number *c)
 
     for (int i = 0; i < KETA; i++)
     {
-
-        // if (((i % 8) == 0) && (carry == 0) && (i != 0))
-        // {
-        //     if (a->lli[i / 8] == 0)
-        //     {
-        //         if (i == 0)
-        //             printf("%lld\n", a->lli[i / 8]);
-        //         break;
-        //     }
-        // }
-        // printf("i = %d, a = %d, b = %d, c = %d, carry = %d, add = %d\n", i, a->n[i], b->n[i], c->n[i], carry, a->n[i] + b->n[i]);
-        // printf("i = %d, a = %d, b = %d, c = %d, carry = %d, add = %d\n", i, a->n[i], b->n[i], c->n[i], carry, a->n[i] + b->n[i]);
-        c->n[i] = (a->n[i] + b->n[i] + carry) % 10;
-        carry = (a->n[i] + b->n[i] + carry) / 10;
+        c->n[i] = (a->n[i] + b->n[i] + carry);
+        carry = (c->n[i]) / 10;
+        c->n[i] %= 10;
         // printf("i = %d, a = %d, b = %d, c = %d, carry = %d, add = %d\n", i, a->n[i], b->n[i], c->n[i], carry, a->n[i] + b->n[i]);
         if (i == KETA - 1 && carry > 0)
         {
@@ -341,6 +332,7 @@ int add(const struct Number *a, const struct Number *b, struct Number *c)
         setSign(c, ZERO);
         // printf("setSign(c, ZERO)\n");
     }
+    // printf("c = %d\n", getInt(c));
     return 0;
 }
 
@@ -515,6 +507,9 @@ int multiple(const struct Number *a, const struct Number *b, struct Number *c)
 int simpleDivide(const struct Number *a, const struct Number *b, struct Number *c)
 {
     struct Number num;
+    struct Number one;
+    clearByZero(&one);
+    setInt(&one, 1);
     clearByZero(c);
     clearByZero(&num);
     copyNumber(a, &num);
@@ -534,7 +529,7 @@ int simpleDivide(const struct Number *a, const struct Number *b, struct Number *
         {
             // printf("num = %d, b = %d,", getInt(&num), getInt(b));
             sub(&num, b, &num);
-            n++;
+            add(c, &one, c);
             // printf("c = %d\n", getInt(c));
         }
     }
@@ -544,13 +539,13 @@ int simpleDivide(const struct Number *a, const struct Number *b, struct Number *
         {
             // printf("num = %d, b = %d,", getInt(&num), getInt(b));
             add(&num, b, &num);
-            n++;
+            add(c, &one, c);
             // printf("c = %d\n", getInt(c));
         }
-        n--;
+        sub(c, &one, c);
     }
-    setInt(c, n);
-    setSign(c, PLUS);
+    // setInt(c, n);
+    // setSign(c, PLUS);
     return num.n[0];
 }
 #endif
